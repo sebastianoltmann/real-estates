@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Seeders;
+
+use Database\Seeders\Development\UserAdminSeeder;
+use Database\Seeders\Other\ProjectSeeder;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
+
+class DevelopmentSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        if(App::environment(['local','development'])){
+            $this->call([
+                UserAdminSeeder::class,
+                ProjectSeeder::class,
+            ]);
+        }
+    }
+}
