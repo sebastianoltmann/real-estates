@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Services\Users\Factory;
+namespace App\Services\Users\Factories;
 
 use App\Models\Team;
 use App\Models\User;
+use App\Services\Projects\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
@@ -29,7 +30,8 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // password
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::random(60),
+            'current_project_id' => Project::first()->id ?? null,
         ];
     }
 
