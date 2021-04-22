@@ -1,24 +1,22 @@
 <?php
 
-namespace App\Services\Projects\Models;
+namespace App\Services\Documents\Models;
 
 use App\Common\Traits\Eloquent\HasUuidAttribute;
-use App\Models\User;
-use App\Services\Projects\Factory\ProjectFactory;
+use App\Services\Documents\Factories\DocumentCategoryFactory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Jetstream\Team;
+use Illuminate\Database\Eloquent\Model;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Project extends Team
+class DocumentCategory extends Model
 {
     use HasFactory,
-        HasTranslations,
         HasUuidAttribute,
+        HasTranslations,
         QueryCacheable;
 
     /**
@@ -32,7 +30,7 @@ class Project extends Team
     /**
      * @var int
      */
-    public $cacheFor = Carbon::SECONDS_PER_MINUTE * Carbon::MINUTES_PER_HOUR * Carbon::HOURS_PER_DAY * Carbon::DAYS_PER_WEEK;
+    public $cacheFor = Carbon::SECONDS_PER_MINUTE * Carbon::MINUTES_PER_HOUR;
 
     /**
      * @var string[]
@@ -44,7 +42,7 @@ class Project extends Team
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'alias', 'is_main'];
+    protected $fillable = ['name'];
 
     /**
      * Create a new factory instance for the model.
@@ -53,32 +51,14 @@ class Project extends Team
      */
     protected static function newFactory(): Factory
     {
-        return new ProjectFactory();
-    }
-
-    /**
-     * Get the value of the model's route key.
-     *
-     * @return mixed
-     */
-    public function getRouteKeyName()
-    {
-        return 'uuid';
+        return new DocumentCategoryFactory();
     }
 
     /**
      * @return HasMany
      */
-    public function projectDomains(): HasMany
+    public function documents(): HasMany
     {
-        return $this->hasMany(ProjectDomain::class);
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Document::class);
     }
 }

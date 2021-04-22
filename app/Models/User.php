@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Services\Documents\Models\Document;
 use App\Services\Projects\Traits\HasProjects;
-use App\Services\Users\Factory\UserFactory;
+use App\Services\Users\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -63,10 +64,19 @@ class User extends Authenticatable
     /**
      * Create a new factory instance for the model.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return UserFactory
      */
-    protected static function newFactory()
+    protected static function newFactory(): UserFactory
     {
         return new UserFactory();
     }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function documents(): BelongsToMany
+    {
+        return $this->belongsToMany(Document::class);
+    }
+
 }
