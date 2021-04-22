@@ -217,6 +217,16 @@ trait HasProjects
 
         $permissions = $this->projectPermissions($project);
 
+        return $this->checkPermissionsIncludesPermission($permissions, $permission);
+    }
+
+    /**
+     * @param array  $permissions
+     * @param string $permission
+     * @return bool
+     */
+    public function checkPermissionsIncludesPermission(array $permissions, string $permission): bool
+    {
         return in_array($permission, $permissions) ||
             in_array('*', $permissions) ||
             (Str::endsWith($permission, ':create') && in_array('*:create', $permissions)) ||

@@ -32,7 +32,7 @@ class ProjectSwitch extends Command
     {
         $alias = $this->argument('alias');
 
-        if(!App::environment(['local', 'development'])) {
+        if(App::environment('production')) {
             return $this->warn("Sorry but we can not switch project on production environment - [{$alias}]");
         }
 
@@ -61,7 +61,6 @@ class ProjectSwitch extends Command
         $domain->project()->associate($project)->save();
 
         Artisan::call('config:cache');
-        Artisan::call('cache:clear');
 
         $this->info("Switched project to {$project->alias}.");
     }
