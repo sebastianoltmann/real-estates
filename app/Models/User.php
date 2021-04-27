@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Common\Traits\Eloquent\HasUuidAttribute;
 use App\Services\Documents\Models\Document;
+use App\Services\Permissions\Roles;
 use App\Services\Projects\Traits\HasProjects;
 use App\Services\Users\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\MediaCollections\Models\Concerns\HasUuid;
 
 class User extends Authenticatable
 {
@@ -20,6 +23,7 @@ class User extends Authenticatable
         HasProfilePhoto,
         HasProjects,
         Notifiable,
+        HasUuidAttribute,
         TwoFactorAuthenticatable;
 
     /**
@@ -69,6 +73,23 @@ class User extends Authenticatable
     protected static function newFactory(): UserFactory
     {
         return new UserFactory();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasProjectRole(Roles::SUPER_ADMIN()->getValue());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->isSuperAdmin()
+            || $this->hasProjectRole(Roles::ADMIN()->getValue());
     }
 
     /**

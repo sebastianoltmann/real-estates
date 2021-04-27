@@ -1,3 +1,3 @@
-require('./bootstrap');
-
-require('alpinejs');
+import 'bootstrap'
+import 'alpinejs';
+import './modules/formValidation'

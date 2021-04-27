@@ -158,12 +158,16 @@ trait HasProjects
     /**
      * Determine if the user has the given role on the given project.
      *
-     * @param  mixed  $project
      * @param  string  $role
+     * @param  Project|null  $project
      * @return bool
      */
-    public function hasProjectRole($project, string $role)
+    public function hasProjectRole(string $role, Project $project = null)
     {
+        if($project === null){
+            $project = $this->currentProject;
+        }
+
         if ($this->ownsProject($project)) {
             return true;
         }
@@ -185,7 +189,7 @@ trait HasProjects
             return ['*'];
         }
 
-        if (! $this->belongsToTeam($project)) {
+        if (! $this->belongsToProject($project)) {
             return [];
         }
 
@@ -195,12 +199,16 @@ trait HasProjects
     /**
      * Determine if the user has the given permission on the given project.
      *
-     * @param  mixed  $project
      * @param  string  $permission
+     * @param  Project|null  $project
      * @return bool
      */
-    public function hasProjectPermission($project, string $permission)
+    public function hasProjectPermission(string $permission, Project $project = null)
     {
+        if($project === null){
+            $project = $this->currentProject;
+        }
+
         if($this->ownsProject($project)) {
             return true;
         }

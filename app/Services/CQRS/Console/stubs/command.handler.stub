@@ -1,0 +1,19 @@
+<?php
+
+namespace DummyNamespace;
+
+
+use App\Services\CQRS\Command;
+use App\Services\CQRS\CommandHandler;
+
+class DummyClass implements CommandHandler
+{
+
+    /**
+     * @param Command $command
+     */
+    public function handle(Command $command): void
+    {
+        // TODO: Implement handle() method.
+    }
+}

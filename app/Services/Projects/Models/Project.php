@@ -3,12 +3,13 @@
 namespace App\Services\Projects\Models;
 
 use App\Common\Traits\Eloquent\HasUuidAttribute;
-use App\Models\User;
+use App\Services\Documents\Models\Document;
+use App\Services\Permissions\Roles;
 use App\Services\Projects\Factory\ProjectFactory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Jetstream\Team;
 use Rennokki\QueryCache\Traits\QueryCacheable;
@@ -75,10 +76,32 @@ class Project extends Team
     }
 
     /**
-     * @return BelongsTo
+     * @return HasMany
      */
-    public function user(): BelongsTo
+    public function documents(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Document::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function usersAdmins(): BelongsToMany
+    {
+        return $this->users()->whereIn('role', [
+            Roles::ADMIN()->getValue(),
+            Roles::SUPER_ADMIN()->getValue(),
+        ]);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function usersWithoutAdmins(): BelongsToMany
+    {
+        return $this->users()->whereNotIn('role', [
+            Roles::ADMIN()->getValue(),
+            Roles::SUPER_ADMIN()->getValue(),
+        ]);
     }
 }

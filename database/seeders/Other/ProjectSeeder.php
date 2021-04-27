@@ -5,7 +5,7 @@ namespace Database\Seeders\Other;
 use App\Models\User;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\Models\ProjectDomain;
-use App\Services\Users\UserRoles;
+use App\Services\Permissions\Roles;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +51,7 @@ class ProjectSeeder extends Seeder
                      * @var User $user
                      */
 
-                    $user->projects()->attach($projectModel, ['role' => UserRoles::SUPER_ADMIN()->getValue()]);
+                    $user->projects()->attach($projectModel, ['role' => Roles::SUPER_ADMIN()->getValue()]);
                     $projectModel->user()->associate($user)->save();
                     $user->switchProject($projectModel);
                 }

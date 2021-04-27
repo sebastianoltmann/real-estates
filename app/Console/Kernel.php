@@ -2,6 +2,10 @@
 
 namespace App\Console;
 
+use App\Services\CQRS\Console\CommandHandlerMakeCommand;
+use App\Services\CQRS\Console\CommandMakeCommand;
+use App\Services\CQRS\Console\QueryHandlerMakeCommand;
+use App\Services\CQRS\Console\QueryMakeCommand;
 use App\Services\Projects\Console\ProjectSwitch;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -14,7 +18,12 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ProjectSwitch::class
+        ProjectSwitch::class,
+
+        QueryMakeCommand::class,
+        QueryHandlerMakeCommand::class,
+        CommandMakeCommand::class,
+        CommandHandlerMakeCommand::class
     ];
 
     /**
