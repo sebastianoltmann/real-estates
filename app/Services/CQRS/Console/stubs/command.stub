@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+
+use App\Services\CQRS\Command;
+
+class DummyClass implements Command
+{
+
+    /**
+     * DummyClass constructor.
+     */
+    public function __construct()
+    {
+        // TODO: Implement __construct() method.
+    }
+}

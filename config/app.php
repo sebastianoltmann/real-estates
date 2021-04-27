@@ -177,6 +177,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\ProjectServiceProvider::class,
+        App\Providers\CQRSServiceProvider::class,
 
     ],
 
@@ -230,6 +231,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        'CommandBus' => App\Services\CQRS\Facades\CommandBusFacade::class,
+        'QueryDispatcher' => App\Services\CQRS\Facades\QueryDispatcherFacade::class,
 
     ],
 

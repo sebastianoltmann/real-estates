@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Services\Documents\Http\Controllers\DocumentController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::group([
+    'middleware' => ['auth:sanctum', 'verified'],
+    'prefix' => LaravelLocalization::setLocale()
+], function(){
+
+    Route::resource(__('routes.documents'), DocumentController::class, ['names' => 'documents']);
+});
