@@ -77,29 +77,7 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::role(Roles::SUPER_ADMIN()->getValue(), __('Super Administrator'), [
-            Permission::READ()->getValue(),
-            Permission::UPDATE()->getValue(),
-            Permission::DELETE()->getValue(),
-            Permission::CREATE()->getValue(),
-
-            Permission::DOCUMENT_READ()->getValue(),
-            Permission::DOCUMENT_UPDATE()->getValue(),
-            Permission::DOCUMENT_DELETE()->getValue(),
-            Permission::DOCUMENT_CREATE()->getValue()
-        ]);
-
-        Jetstream::role(Roles::ADMIN()->getValue(), __('Administrator'), [
-            Permission::READ()->getValue(),
-            Permission::UPDATE()->getValue(),
-            Permission::DELETE()->getValue(),
-            Permission::CREATE()->getValue(),
-
-            Permission::DOCUMENT_READ()->getValue(),
-            Permission::DOCUMENT_UPDATE()->getValue(),
-            Permission::DOCUMENT_DELETE()->getValue(),
-            Permission::DOCUMENT_CREATE()->getValue()
-        ]);
+        Jetstream::role(Roles::ADMIN()->getValue(), __('Administrator'), Permission::toArray());
 
         Jetstream::role(Roles::USER()->getValue(), __('User'), [
             Permission::READ()->getValue(),

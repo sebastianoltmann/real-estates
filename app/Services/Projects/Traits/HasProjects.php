@@ -4,6 +4,7 @@
 namespace App\Services\Projects\Traits;
 
 
+use App\Models\User;
 use App\Services\Projects\Models\Project;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Jetstream;
@@ -85,6 +86,13 @@ trait HasProjects
     public function ownedProjects()
     {
         return $this->hasMany(Jetstream::teamModel());
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ownedTeams(){
+        return $this->ownedProjects();
     }
 
     /**
