@@ -59,7 +59,7 @@ class AdminDocumentsController extends Controller
             return Redirect::route('admin.documents.index')
                 ->withSuccessMsg('Document successfully added.');
         } catch(\Exception $e) {
-            return Redirect::back()->withInput()->withErrorMsg($e->getMessage());
+            return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ class AdminDocumentsController extends Controller
             CommandBus::handleWithTransaction(new UpdateDocumentCommand($document, $request->validated()));
             return Redirect::route('admin.documents.index');
         } catch(\Exception $e) {
-            return Redirect::back()->withInput()->withErrorMsg($e->getMessage());
+            return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
     }
 
@@ -89,7 +89,7 @@ class AdminDocumentsController extends Controller
             CommandBus::handleWithTransaction(new DeleteDocumentCommand($document));
             return Redirect::route('admin.documents.index');
         } catch(\Exception $e) {
-            return Redirect::back()->withInput()->withErrorMsg($e->getMessage());
+            return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
     }
 }

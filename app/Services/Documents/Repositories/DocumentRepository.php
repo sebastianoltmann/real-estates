@@ -41,10 +41,6 @@ class DocumentRepository extends EloquentRepository
             $document = $this->lastDownloadedDocumentByUser($user);
         }
 
-        if($lastDownloadAt = $this->getLastDownloadedDocumentTimeFromPivotByUser($document, $user)) {
-            return $lastDownloadAt;
-        }
-
         if($lastDownloadAt = $this->getLastDownloadedDocumentTimeFromEventByUser($document, $user)) {
             return $lastDownloadAt;
         }
@@ -61,27 +57,13 @@ class DocumentRepository extends EloquentRepository
         $storeEvent = config('event-sourcing.stored_event_model');
 
         $event = $storeEvent::whereEventClass(DocumentHasBeenDownloaded::class)
-            ->where('meta_data->download_by', $user->id)->orderBy($storeEvent::CREATED_AT, 'desc')->first();
+            ->where('meta_data->download_by', $user->id)
+            ->orderBy($storeEvent::CREATED_AT, 'desc')
+            ->first();
 
         if(!$event) return null;
 
         return $this->find($event->event_properties['document']['id']);
-    }
-
-    /**
-     * @param Document $document
-     * @param User     $user
-     * @return null
-     */
-    private function getLastDownloadedDocumentTimeFromPivotByUser(Document $document, User $user): ?Carbon
-    {
-        $time = $user->documents()
-            ->select('last_download_at')
-            ->where('document_id', $document->id)->first();
-
-        return !empty($time->last_download_at)
-            ? Carbon::createFromTimeString($time->last_download_at)
-            : null;
     }
 
     /**

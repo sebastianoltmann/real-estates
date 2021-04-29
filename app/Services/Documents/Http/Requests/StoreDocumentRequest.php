@@ -28,8 +28,6 @@ class StoreDocumentRequest extends FormRequest
             'name' => 'required|string|min:3|max:255',
             'file' => 'required|file|mimes:doc,docx,pdf,xls,xlsx|max:'.config('media-library.max_file_size') / 1024,
             'category' => 'required|uuid|exists:document_categories,uuid',
-            'users' => 'required|array',
-            'users.*' => 'uuid|exists:users,uuid'
         ];
     }
 }

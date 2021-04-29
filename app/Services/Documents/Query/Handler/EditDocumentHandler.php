@@ -34,7 +34,6 @@ class EditDocumentHandler implements QueryHandler
             'document' => $query->getDocument(),
             'categories' => DocumentCategory::all(),
             'user' => Auth::user(),
-            'users' => $this->projectService->getProject()->usersWithoutAdmins,
         ];
     }
 }
