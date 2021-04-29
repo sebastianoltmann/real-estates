@@ -12,9 +12,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <x-jet-nav-link href="{{ route('documents.index') }}" :active="request()->routeIs('documents.index')">
+                @if(Auth::user()->hasProjectPermission(\App\Services\Permissions\Permission::DOCUMENT_READ()->getValue()))
+                <x-jet-nav-link href="{{ route('admin.documents.index') }}" :active="request()->routeIs('admin.documents.index')">
                     {{ __('Documents') }}
                 </x-jet-nav-link>
+                @endif
+
+                @can('viewAny', \App\Models\User::class)
+                    <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
+                        {{ __('Users') }}
+                    </x-jet-nav-link>
+                @endcan
             </ul>
 
             <!-- Right Side Of Navbar -->

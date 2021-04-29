@@ -15,15 +15,17 @@
 
                 @endif
 
-                @if($document->id && $user->hasProjectPermission(\App\Services\Permissions\Permission::DOCUMENT_DELETE()->getValue()))
-                    <form method="post" action="{{ route('documents.destroy', $document) }}">
-                        @method('delete')
-                        @csrf
+                @if($document->getKey())
+                    @can('delete', $document)
+                        <form method="post" action="{{ route('documents.destroy', $document) }}">
+                            @method('delete')
+                            @csrf
 
-                        <button class="btn btn-dark" type="submit">
-                            Delete
-                        </button>
-                    </form>
+                            <button class="btn btn-dark" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    @endcan
                 @endif
 
             </h4>
@@ -99,7 +101,7 @@
             <div class="card-footer text-right">
                 <button class="btn btn-dark btn-lg" style="min-width: 250px;">Save</button>
 
-                @if($document->id)
+                @if(!empty($document->id))
                     @method('patch')
                 @endif
 

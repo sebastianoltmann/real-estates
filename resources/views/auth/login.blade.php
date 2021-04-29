@@ -6,6 +6,8 @@
 
         <div class="card-body">
 
+            <x-flash-message-bootstrap/>
+
             <x-jet-validation-errors class="mb-3 rounded-0" />
 
             @if (session('status'))

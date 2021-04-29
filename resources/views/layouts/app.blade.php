@@ -31,6 +31,8 @@
 
         <!-- Page Content -->
         <main class="container my-5">
+            <x-flash-message-bootstrap/>
+
             {{ $slot }}
         </main>
 

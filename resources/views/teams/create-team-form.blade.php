@@ -21,9 +21,20 @@
             </div>
         </div>
 
+
+
         <div class="w-md-75">
             <div class="form-group">
-                <x-jet-label for="name" value="{{ __('Team Name') }}" />
+                <x-jet-label for="alias" value="{{ __('Project alias') }}" />
+                <x-jet-input id="alias" type="text" class="{{ $errors->has('alias') ? 'is-invalid' : '' }}"
+                             wire:model.defer="state.alias" autofocus />
+                <x-jet-input-error for="alias" />
+            </div>
+        </div>
+
+        <div class="w-md-75">
+            <div class="form-group">
+                <x-jet-label for="name" value="{{ __('Project name') }}" />
                 <x-jet-input id="name" type="text" class="{{ $errors->has('name') ? 'is-invalid' : '' }}"
                              wire:model.defer="state.name" autofocus />
                 <x-jet-input-error for="name" />
