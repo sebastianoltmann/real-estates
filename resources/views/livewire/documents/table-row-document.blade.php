@@ -8,12 +8,12 @@
     </td>
     <td class="document-table-column text-right">
         @can('view', $document)
-            <a href="{{ route('documents.show', $document) }}" class="btn btn-dark" target="_blank">
+            <a href="{{ route('admin.documents.show', $document) }}" class="btn btn-dark" target="_blank">
                 Download
             </a>
         @endcan
         @can('update', $document)
-            <a href="{{ route('documents.edit', $document) }}" class="btn btn-secondary">
+            <a href="{{ route('admin.documents.edit', $document) }}" class="btn btn-secondary">
                 Edit
             </a>
         @endcan

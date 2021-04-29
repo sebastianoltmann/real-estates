@@ -7,6 +7,7 @@
 
     <div class="card shadow-sm">
         <div class="card-header">
+
             <h4 class="mb-0 d-flex align-items-center justify-content-between">
                 @if($document->id)
                     {{ __('Edit document:') }} {{ $document->name | title }}
@@ -17,7 +18,7 @@
 
                 @if($document->getKey())
                     @can('delete', $document)
-                        <form method="post" action="{{ route('documents.destroy', $document) }}">
+                        <form method="post" action="{{ route('admin.documents.destroy', $document) }}">
                             @method('delete')
                             @csrf
 
@@ -32,7 +33,7 @@
         </div>
 
         <x-form class="needs-validation"
-                :action="route($document->id ? 'documents.update' : 'documents.store', $document)"
+                :action="route($document->id ? 'admin.documents.update' : 'admin.documents.store', $document)"
                 enctype="multipart/form-data"
                 novalidate
         >
@@ -74,28 +75,6 @@
                     </x-form-group>
                 @endif
 
-                @if(!$users->isEmpty())
-                    <hr class="my-4">
-                    <x-form-group x-data="users()">
-                        <p class="d-flex align-items-center justify-content-between">
-                            {{ __('Document users') }}
-                            <button class="btn btn-secondary" type="button" @click="toggleCheck"
-                                    x-text="label"></button>
-                        </p>
-
-                        @foreach($users as $u)
-                            <x-form-checkbox :id="'users_'.$u->uuid"
-                                             :name="'users[]'"
-                                             :value="$u->uuid"
-                                             :checked="$document->users && $document->users->contains($u)"
-                                             x-model="selectedUsers"
-                                             autocomplete="off"
-                                             :label="sprintf('%s (%s)', $u->name, $u->email)"
-                            />
-                        @endforeach
-                    </x-form-group>
-                @endif
-
             </div>
 
             <div class="card-footer text-right">
@@ -111,23 +90,4 @@
 
         </x-form>
     </div>
-
-    <script>
-        function users() {
-            return {
-                users: {!! $users->pluck('uuid')->toJson() !!},
-                selectedUsers: [{!! $document->users ? $document->users->pluck('uuid')->toJson() : null !!}],
-                label: 'Enable for all',
-                toggleCheck() {
-                    if (this.users.length !== this.selectedUsers.length) {
-                        this.selectedUsers = this.users;
-                        this.label = 'Disable for all';
-                    } else {
-                        this.selectedUsers = []
-                        this.label = 'Enable for all';
-                    }
-                },
-            }
-        }
-    </script>
 </x-app-layout>

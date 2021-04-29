@@ -4,7 +4,7 @@
             {{ __('Documents') }}
 
             @can('create', \App\Services\Documents\Models\Document::class)
-                <a href="{{ route('documents.create') }}" class="ml-2 btn btn-dark">
+                <a href="{{ route('admin.documents.create') }}" class="ml-2 btn btn-dark">
                     {{ __('Create new document') }}
                 </a>
             @endcan
@@ -20,7 +20,7 @@
 
                     @if(!$category->documentsByUserAndProject->isEmpty())
                         @can('update', \App\Services\Documents\Models\Document::class)
-                            <a href="{{ route('documents.create') }}" class="ml-auto btn btn-secondary">
+                            <a href="{{ route('admin.documents.create') }}" class="ml-auto btn btn-secondary">
                                 {{ __('Enable for all users') }}
                             </a>
                         @endcan
