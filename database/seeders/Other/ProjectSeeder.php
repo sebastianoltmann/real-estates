@@ -52,7 +52,7 @@ class ProjectSeeder extends Seeder
                      */
 
                     $user->projects()->attach($projectModel, ['role' => Roles::ADMIN()->getValue()]);
-                    $projectModel->user()->associate($user)->save();
+                    $projectModel->owner()->associate($user)->save();
                     $user->switchProject($projectModel);
                 }
 
