@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
+use Illuminate\Auth\Events\Verified;
 
 class ResetUserPassword implements ResetsUserPasswords
 {
@@ -25,6 +26,13 @@ class ResetUserPassword implements ResetsUserPasswords
 
         $user->forceFill([
             'password' => Hash::make($input['password']),
+            'password_changed_at' => now(),
         ])->save();
+
+        if(!$user->email_verified_at){
+            if($user->markEmailAsVerified()) {
+                event(new Verified($user));
+            }
+        }
     }
 }

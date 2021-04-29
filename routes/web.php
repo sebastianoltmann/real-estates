@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Services\Documents\Http\Controllers\DocumentController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Services\Users\Http\Controllers\AdminUsersController;
+use App\Services\Users\Http\Controllers\VerifyEmailController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,10 +23,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/email/verify/{user}/{hash}', [VerifyEmailController::class, '__invoke'])
+//    ->middleware(['throttle:6,1'])
+    ->name('verification.verify');
+
+Route::get('/email/verify', [EmailVerificationPromptController::class, '__invoke'])
+    ->middleware(['auth'])
+    ->name('verification.notice');
+
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
+
+
+
+
 Route::group([
-    'middleware' => ['auth:sanctum', 'verified'],
-    'prefix' => LaravelLocalization::setLocale()
+    'middleware' => ['auth:sanctum', 'auth.user', 'verified'],
+    'prefix' => LaravelLocalization::setLocale() ?? null
 ], function(){
 
-    Route::resource(__('routes.documents'), DocumentController::class, ['names' => 'documents']);
+    Route::get('/dashboard', function () {
+        return view('welcome');
+    });
 });
