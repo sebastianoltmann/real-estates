@@ -18,7 +18,7 @@ use App\Services\Documents\Query\IndexDocumentQuery;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
-class DocumentController extends Controller
+class AdminDocumentsController extends Controller
 {
 
     public function __construct()

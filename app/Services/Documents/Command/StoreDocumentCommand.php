@@ -28,11 +28,6 @@ class StoreDocumentCommand implements Command
     protected string $category;
 
     /**
-     * @var string[]
-     */
-    protected array $users;
-
-    /**
      * StoreDocumentCommand constructor.
      */
     public function __construct(array $params)
@@ -54,14 +49,6 @@ class StoreDocumentCommand implements Command
     public function getCategory(): string
     {
         return $this->category;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getUsers(): array
-    {
-        return $this->users;
     }
 
     /**

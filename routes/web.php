@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Services\Documents\Http\Controllers\DocumentController;
+use App\Services\Documents\Http\Controllers\AdminDocumentsController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Services\Users\Http\Controllers\AdminUsersController;
 use App\Services\Users\Http\Controllers\VerifyEmailController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;

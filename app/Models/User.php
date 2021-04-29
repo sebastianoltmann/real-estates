@@ -150,14 +150,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * @return BelongsToMany
-     */
-    public function documents(): BelongsToMany
-    {
-        return $this->belongsToMany(Document::class);
-    }
-
-    /**
      * @return HasMany
      */
     public function ownRealEstate(): HasMany
