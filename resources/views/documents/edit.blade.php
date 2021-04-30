@@ -7,6 +7,7 @@
 
     <div class="card shadow-sm">
         <div class="card-header">
+
             <h4 class="mb-0 d-flex align-items-center justify-content-between">
                 @if($document->id)
                     {{ __('Edit document:') }} {{ $document->name | title }}
@@ -15,22 +16,24 @@
 
                 @endif
 
-                @if($document->id && $user->hasProjectPermission(\App\Services\Permissions\Permission::DOCUMENT_DELETE()->getValue()))
-                    <form method="post" action="{{ route('documents.destroy', $document) }}">
-                        @method('delete')
-                        @csrf
+                @if($document->getKey())
+                    @can('delete', $document)
+                        <form method="post" action="{{ route('admin.documents.destroy', $document) }}">
+                            @method('delete')
+                            @csrf
 
-                        <button class="btn btn-dark" type="submit">
-                            Delete
-                        </button>
-                    </form>
+                            <button class="btn btn-dark" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    @endcan
                 @endif
 
             </h4>
         </div>
 
         <x-form class="needs-validation"
-                :action="route($document->id ? 'documents.update' : 'documents.store', $document)"
+                :action="route($document->id ? 'admin.documents.update' : 'admin.documents.store', $document)"
                 enctype="multipart/form-data"
                 novalidate
         >
@@ -72,34 +75,19 @@
                     </x-form-group>
                 @endif
 
-                @if(!$users->isEmpty())
-                    <hr class="my-4">
-                    <x-form-group x-data="users()">
-                        <p class="d-flex align-items-center justify-content-between">
-                            {{ __('Document users') }}
-                            <button class="btn btn-secondary" type="button" @click="toggleCheck"
-                                    x-text="label"></button>
-                        </p>
-
-                        @foreach($users as $u)
-                            <x-form-checkbox :id="'users_'.$u->uuid"
-                                             :name="'users[]'"
-                                             :value="$u->uuid"
-                                             :checked="$document->users && $document->users->contains($u)"
-                                             x-model="selectedUsers"
-                                             autocomplete="off"
-                                             :label="sprintf('%s (%s)', $u->name, $u->email)"
-                            />
-                        @endforeach
-                    </x-form-group>
-                @endif
-
             </div>
 
-            <div class="card-footer text-right">
-                <button class="btn btn-dark btn-lg" style="min-width: 250px;">Save</button>
+            <div class="card-footer d-flex align-items-center">
+                <a class="btn btn-secondary btn btn-lg d-flex align-items-center" href="{{ route('admin.documents.index') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left mr-3" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    <span>{{ __('Back') }}</span>
 
-                @if($document->id)
+                </a>
+                <button class="btn btn-dark btn-lg ml-auto" style="min-width: 250px;">Save</button>
+
+                @if(!empty($document->id))
                     @method('patch')
                 @endif
 
@@ -109,23 +97,4 @@
 
         </x-form>
     </div>
-
-    <script>
-        function users() {
-            return {
-                users: {!! $users->pluck('uuid')->toJson() !!},
-                selectedUsers: [{!! $document->users ? $document->users->pluck('uuid')->toJson() : null !!}],
-                label: 'Enable for all',
-                toggleCheck() {
-                    if (this.users.length !== this.selectedUsers.length) {
-                        this.selectedUsers = this.users;
-                        this.label = 'Disable for all';
-                    } else {
-                        this.selectedUsers = []
-                        this.label = 'Enable for all';
-                    }
-                },
-            }
-        }
-    </script>
 </x-app-layout>

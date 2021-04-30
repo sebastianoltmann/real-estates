@@ -6,15 +6,28 @@ use App\Common\Traits\Eloquent\HasUuidAttribute;
 use App\Services\Documents\Models\Document;
 use App\Services\Permissions\Roles;
 use App\Services\Projects\Factory\ProjectFactory;
+use App\Services\RealEstates\Models\RealEstate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Laravel\Jetstream\Team;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * Class Project
+ *
+ * @property Collection realEstates
+ * @property Collection projectDomains
+ * @property Collection documents
+ *
+ * @method static flushQueryCache
+ *
+ * @package App\Services\Projects\Models
+ */
 class Project extends Team
 {
     use HasFactory,
@@ -64,7 +77,7 @@ class Project extends Team
      */
     public function getRouteKeyName()
     {
-        return 'uuid';
+        return $this->getUuidKeyName();
     }
 
     /**
@@ -80,7 +93,23 @@ class Project extends Team
      */
     public function documents(): HasMany
     {
+        return $this->allDocuments()->doesntHave('realEstates');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function allDocuments(): HasMany
+    {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function realEstates(): HasMany
+    {
+        return $this->hasMany(RealEstate::class);
     }
 
     /**
@@ -88,10 +117,7 @@ class Project extends Team
      */
     public function usersAdmins(): BelongsToMany
     {
-        return $this->users()->whereIn('role', [
-            Roles::ADMIN()->getValue(),
-            Roles::SUPER_ADMIN()->getValue(),
-        ]);
+        return $this->users()->whereRole(Roles::ADMIN()->getValue());
     }
 
     /**
@@ -99,9 +125,7 @@ class Project extends Team
      */
     public function usersWithoutAdmins(): BelongsToMany
     {
-        return $this->users()->whereNotIn('role', [
-            Roles::ADMIN()->getValue(),
-            Roles::SUPER_ADMIN()->getValue(),
-        ]);
+        return $this->users()->whereRole(Roles::USER()->getValue());
     }
+
 }

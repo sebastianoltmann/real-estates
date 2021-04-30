@@ -10,20 +10,10 @@ use App\Services\Documents\Models\Document;
 use App\Services\Documents\Models\DocumentCategory;
 use App\Models\User;
 use App\Services\Projects\ProjectServiceInterface;
+use Illuminate\Support\Facades\Auth;
 
 class StoreDocumentHandler implements CommandHandler
 {
-
-    /**
-     * StoreDocumentHandler constructor.
-     *
-     * @param ProjectServiceInterface $projectService
-     */
-    public function __construct(
-        private ProjectServiceInterface $projectService
-    )
-    {
-    }
 
     /**
      * @param StoreDocumentCommand $command
@@ -34,13 +24,11 @@ class StoreDocumentHandler implements CommandHandler
          * @var Document $document
          */
 
-        $users = User::whereIn('uuid', $command->getUsers())->get('id')->pluck('id');
         $documentCategory = DocumentCategory::findByUuid($command->getCategory());
 
         $document = Document::create($command->toArray());
         $document->category()->associate($documentCategory)->save();
-        $document->project()->associate($this->projectService->getProject())->save();
-        $document->users()->sync($users);
+        $document->project()->associate(Auth::user()->currentProject)->save();
         $document->setFileDocument($command->getFile());
 
     }

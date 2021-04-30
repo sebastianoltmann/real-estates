@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDocumentUserTable extends Migration
+class AddColumnPasswordChangedAtToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateDocumentUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('document_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('document_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->timestamp('last_download_at');
+        Schema::table('users', function (Blueprint $table) {
+            $table->timestamp('password_changed_at')->nullable()->after('password');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateDocumentUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_user');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('password_changed_at');
+        });
     }
 }

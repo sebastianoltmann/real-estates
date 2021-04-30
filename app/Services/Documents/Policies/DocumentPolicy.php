@@ -59,7 +59,7 @@ class DocumentPolicy
      * @param Document $document
      * @return mixed
      */
-    public function update(User $user, Document $document)
+    public function update(User $user, Document $document = null)
     {
         return $user->hasProjectPermission(Permission::DOCUMENT_UPDATE()->getValue());
     }

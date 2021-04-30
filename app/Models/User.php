@@ -5,18 +5,38 @@ namespace App\Models;
 use App\Common\Traits\Eloquent\HasUuidAttribute;
 use App\Services\Documents\Models\Document;
 use App\Services\Permissions\Roles;
+use App\Services\Projects\Models\Project;
 use App\Services\Projects\Traits\HasProjects;
+use App\Services\RealEstates\Models\RealEstate;
 use App\Services\Users\Factories\UserFactory;
+use Illuminate\Auth\Events\Registered;
+use App\Services\Users\Notifications\VerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\MediaLibrary\MediaCollections\Models\Concerns\HasUuid;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use \Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable
+/**
+ * Class User
+ *
+ * @method static Builder admins(Project $project = null)
+ * @method static Builder allAdmins()
+ *
+ * @property Collection ownRealEstate
+ * @property Collection documents
+ * @property Collection realEstates
+ *
+ * @package App\Models
+ */
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens,
         HasFactory,
@@ -24,7 +44,8 @@ class User extends Authenticatable
         HasProjects,
         Notifiable,
         HasUuidAttribute,
-        TwoFactorAuthenticatable;
+        TwoFactorAuthenticatable,
+        SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -54,6 +75,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password_changed_at' => 'datetime',
     ];
 
     /**
@@ -63,6 +85,17 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+    ];
+
+    /**
+     * The event map for the model.
+     *
+     * Allows for object-based events for native Eloquent events.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'created' => Registered::class,
     ];
 
     /**
@@ -76,11 +109,36 @@ class User extends Authenticatable
     }
 
     /**
-     * @return bool
+     * @param Builder      $query
+     * @param Project|null $project
+     * @return Builder
      */
-    public function isSuperAdmin(): bool
+    public function scopeAdmins(Builder $query, Project $project = null)
     {
-        return $this->hasProjectRole(Roles::SUPER_ADMIN()->getValue());
+        if($project === null) $project = auth()->user()->currentProject;
+        return $this->scopeAllAdmins($query)
+            ->whereHas('projects', function(Builder $query) use ($project) {
+                $query->where($project->getForeignKey(), $project->getKey());
+        });
+    }
+
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeAllAdmins(Builder $query): Builder
+    {
+        return $query->whereHas('projects', function(Builder $query) {
+            $query->whereRole(Roles::ADMIN()->getValue());
+        });
+    }
+
+    /**
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return $this->getUuidKeyName();
     }
 
     /**
@@ -88,16 +146,34 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->isSuperAdmin()
-            || $this->hasProjectRole(Roles::ADMIN()->getValue());
+        return $this->hasProjectRole(Roles::ADMIN()->getValue());
     }
 
     /**
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function documents(): BelongsToMany
+    public function ownRealEstate(): HasMany
     {
-        return $this->belongsToMany(Document::class);
+        return $this->hasMany(RealEstate::class);
     }
 
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
+    }
+
+    /**
+     * Determine if the user has changed their password.
+     *
+     * @return bool
+     */
+    public function hasChangedPassword()
+    {
+        return ! is_null($this->password_changed_at);
+    }
 }

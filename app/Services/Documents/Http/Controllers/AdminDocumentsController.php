@@ -18,7 +18,7 @@ use App\Services\Documents\Query\IndexDocumentQuery;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
-class DocumentController extends Controller
+class AdminDocumentsController extends Controller
 {
 
     public function __construct()
@@ -56,9 +56,10 @@ class DocumentController extends Controller
     {
         try {
             CommandBus::handleWithTransaction(new StoreDocumentCommand($request->validated()));
-            return Redirect::route('documents.index');
+            return Redirect::route('admin.documents.index')
+                ->withSuccessMsg('Document successfully added.');
         } catch(\Exception $e) {
-            return Redirect::back()->withInput();
+            return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
     }
 
@@ -66,9 +67,9 @@ class DocumentController extends Controller
     {
         try {
             CommandBus::handleWithTransaction(new UpdateDocumentCommand($document, $request->validated()));
-            return Redirect::route('documents.index');
+            return Redirect::route('admin.documents.index');
         } catch(\Exception $e) {
-            return Redirect::back()->withInput();
+            return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
     }
 
@@ -86,9 +87,9 @@ class DocumentController extends Controller
     {
         try {
             CommandBus::handleWithTransaction(new DeleteDocumentCommand($document));
-            return Redirect::route('documents.index');
+            return Redirect::route('admin.documents.index');
         } catch(\Exception $e) {
-            return Redirect::back()->withInput();
+            return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
     }
 }

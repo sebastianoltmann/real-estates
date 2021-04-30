@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Exceptions;
-
+;
+use App\Exceptions\Redirectable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Redirect;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,6 +29,7 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
     /**
      * Register the exception handling callbacks for the application.
      *
@@ -34,8 +37,16 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->reportable(function(Throwable $e) {
+
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if($e instanceof Redirectable) {
+            return Redirect::route($e->route());
+        }
+        return parent::render($request, $e);
     }
 }

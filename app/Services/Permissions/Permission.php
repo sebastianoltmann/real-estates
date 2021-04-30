@@ -3,6 +3,7 @@
 
 namespace App\Services\Permissions;
 
+use Illuminate\Support\Collection;
 use MyCLabs\Enum\Enum;
 
 /**
@@ -16,6 +17,10 @@ use MyCLabs\Enum\Enum;
  * @method static Permission DOCUMENT_UPDATE()
  * @method static Permission DOCUMENT_DELETE()
  * @method static Permission DOCUMENT_READ()
+ * @method static Permission USER_CREATE()
+ * @method static Permission USER_UPDATE()
+ * @method static Permission USER_DELETE()
+ * @method static Permission USER_READ()
  * @package App\Services\Permissions
  */
 final class Permission extends Enum
@@ -29,4 +34,10 @@ final class Permission extends Enum
     private const DOCUMENT_UPDATE = 'document:update';
     private const DOCUMENT_DELETE = 'document:delete';
     private const DOCUMENT_READ = 'document:read';
+
+    private const USER_CREATE = 'user:create';
+    private const USER_UPDATE = 'user:update';
+    private const USER_DELETE = 'user:delete';
+    private const USER_READ = 'user:read';
+
 }

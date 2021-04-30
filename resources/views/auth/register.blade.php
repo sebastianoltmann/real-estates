@@ -26,19 +26,19 @@
                     <x-jet-input-error for="email"></x-jet-input-error>
                 </div>
 
-                <div class="form-group">
-                    <x-jet-label value="{{ __('Password') }}" />
+{{--                <div class="form-group">--}}
+{{--                    <x-jet-label value="{{ __('Password') }}" />--}}
 
-                    <x-jet-input class="{{ $errors->has('password') ? 'is-invalid' : '' }}" type="password"
-                                 name="password" required autocomplete="new-password" />
-                    <x-jet-input-error for="password"></x-jet-input-error>
-                </div>
+{{--                    <x-jet-input class="{{ $errors->has('password') ? 'is-invalid' : '' }}" type="password"--}}
+{{--                                 name="password" required autocomplete="new-password" />--}}
+{{--                    <x-jet-input-error for="password"></x-jet-input-error>--}}
+{{--                </div>--}}
 
-                <div class="form-group">
-                    <x-jet-label value="{{ __('Confirm Password') }}" />
+{{--                <div class="form-group">--}}
+{{--                    <x-jet-label value="{{ __('Confirm Password') }}" />--}}
 
-                    <x-jet-input class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />
-                </div>
+{{--                    <x-jet-input class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />--}}
+{{--                </div>--}}
 
                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                     <div class="form-group">

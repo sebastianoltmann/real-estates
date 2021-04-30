@@ -8,16 +8,27 @@ use App\Models\User;
 use App\Services\Documents\Events\DocumentHasBeenUpdated;
 use App\Services\Documents\Factories\DocumentFactory;
 use App\Services\Projects\Models\Project;
+use App\Services\RealEstates\Models\RealEstate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Translatable\HasTranslations;
 use App\Services\Documents\Traits\HasFileDocument;
 
+/**
+ * Class Document
+ *
+ * @property Project|null $project
+ * @property DocumentCategory|null $documentCategory
+ * @property DocumentCategory|null $category
+ * @property Collection|null $realEstates
+ * @package App\Services\Documents\Models
+ */
 class Document extends Model implements HasMedia
 {
     use HasFactory,
@@ -81,14 +92,6 @@ class Document extends Model implements HasMedia
     }
 
     /**
-     * @return BelongsToMany
-     */
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class);
-    }
-
-    /**
      * @return BelongsTo
      */
     public function documentCategory(): BelongsTo
@@ -102,5 +105,13 @@ class Document extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->documentCategory();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function realEstates(): BelongsToMany
+    {
+        return $this->belongsToMany(RealEstate::class);
     }
 }
