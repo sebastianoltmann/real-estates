@@ -77,8 +77,15 @@
 
             </div>
 
-            <div class="card-footer text-right">
-                <button class="btn btn-dark btn-lg" style="min-width: 250px;">Save</button>
+            <div class="card-footer d-flex align-items-center">
+                <a class="btn btn-secondary btn btn-lg d-flex align-items-center" href="{{ route('admin.documents.index') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left mr-3" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    <span>{{ __('Back') }}</span>
+
+                </a>
+                <button class="btn btn-dark btn-lg ml-auto" style="min-width: 250px;">Save</button>
 
                 @if(!empty($document->id))
                     @method('patch')
