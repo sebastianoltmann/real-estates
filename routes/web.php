@@ -38,7 +38,7 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 
 
 Route::group([
-    'middleware' => ['auth:sanctum', 'auth.user', 'verified'],
+    'middleware' => ['auth:sanctum', 'auth', 'verified'],
     'prefix' => LaravelLocalization::setLocale() ?? null
 ], function(){
 

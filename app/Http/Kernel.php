@@ -3,8 +3,6 @@
 namespace App\Http;
 
 use App\Services\Projects\Middleware\ProjectExist;
-use App\Services\Users\Http\Middleware\AuthenticateAdmin;
-use App\Services\Users\Http\Middleware\AuthenticateUser;
 use App\Services\Users\Http\Middleware\EnsureEmailAndPasswordIsVerified;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -51,7 +49,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            AuthenticateAdmin::class,
+            \App\Http\Middleware\Authenticate::class,
             ProjectExist::class,
         ],
 
@@ -70,7 +68,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.user' => AuthenticateUser::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
