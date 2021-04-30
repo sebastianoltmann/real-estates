@@ -93,6 +93,14 @@ class Project extends Team
      */
     public function documents(): HasMany
     {
+        return $this->allDocuments()->doesntHave('realEstates');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function allDocuments(): HasMany
+    {
         return $this->hasMany(Document::class);
     }
 
