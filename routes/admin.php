@@ -37,7 +37,10 @@ Route::resourceLang('real-estates.documents', AdminRealEstatesDocumentsControlle
     ->names('realEstates.documents')
     ->except(['index', 'show']);
 
-Route::get(LaravelLocalization::transRoute('routes.trash'), [AdminTrashController::class, 'index'])->name('trash.index');
+
+Route::get(LaravelLocalization::transRoute('routes.trash.index'), [AdminTrashController::class, 'index'])->name('trash.index');
+Route::patch(LaravelLocalization::transRoute('routes.trash.restore'), [AdminTrashController::class, 'restore'])->name('trash.restore');
+Route::delete(LaravelLocalization::transRoute('routes.trash.forceDelete'), [AdminTrashController::class, 'forceDelete'])->name('trash.forceDelete');
 
 
 //Route::resource(__('routes.real_estates') . '.' . __('routes.documents'), AdminRealEstatesDocumentsController::class, ['names' => 'realEstates.documents']);
