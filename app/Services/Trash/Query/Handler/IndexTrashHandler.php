@@ -15,18 +15,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Trash\TrashModelBindings;
 
 class IndexTrashHandler implements QueryHandler
 {
-
-    /**
-     * @var string[]
-     */
-    private $bindings = [
-        'documents' => Document::class,
-        'users' => User::class,
-        'real-estates' => RealEstate::class,
-    ];
 
     /**
      * @param IndexTrashQuery $query
@@ -38,7 +30,7 @@ class IndexTrashHandler implements QueryHandler
         /**
          * @var SoftDeletes $model
          */
-        $model = $this->resourceModel($resource);
+        $model = TrashModelBindings::resourceModel($resource);
 
         if(!$model)
             abort(Response::HTTP_NOT_FOUND);
@@ -61,24 +53,9 @@ class IndexTrashHandler implements QueryHandler
         $models = $query->onlyTrashed()->paginate();
 
         return [
-            'trashableModels' => $this->bindings,
+            'trashableModels' => TrashModelBindings::BINDINGS,
             'models' => $models,
             'resource' => $resource
         ];
-    }
-
-    /**
-     * @param string $resource
-     * @return Model|null
-     */
-    private function resourceModel(string $resource): ?Model
-    {
-        $model = $this->bindings[$resource] ?? null;
-        if(!$model) return $model;
-
-        if(!in_array(SoftDeletes::class, class_uses($model)))
-            return null;
-
-        return new $model;
     }
 }
