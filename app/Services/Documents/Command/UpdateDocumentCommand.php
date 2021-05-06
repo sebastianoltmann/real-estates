@@ -5,6 +5,7 @@ namespace App\Services\Documents\Command;
 
 use App\Services\CQRS\Command;
 use App\Services\Documents\Models\Document;
+use App\Services\RealEstates\Models\RealEstate;
 
 class UpdateDocumentCommand extends StoreDocumentCommand
 {

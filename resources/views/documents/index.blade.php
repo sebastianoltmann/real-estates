@@ -35,7 +35,7 @@
             </div>
 
             <div class="card-body">
-                @if(!$category->documentsByUserAndProject->isEmpty())
+                @if(!$category->documentsWithoutRealEstates->isEmpty())
                     <table class="table document-table table-borderless">
                         <thead>
                         <tr>
@@ -47,7 +47,7 @@
 
                         </thead>
                         <tbody>
-                        @foreach($category->documentsByUserAndProject as $document)
+                        @foreach($category->documentsWithoutRealEstates as $document)
                             @livewire('documents.table-row-document', [
                                 'document' => $document,
                                 'category' => $category,

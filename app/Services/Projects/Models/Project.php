@@ -112,20 +112,4 @@ class Project extends Team
         return $this->hasMany(RealEstate::class);
     }
 
-    /**
-     * @return BelongsToMany
-     */
-    public function usersAdmins(): BelongsToMany
-    {
-        return $this->users()->whereRole(Roles::ADMIN()->getValue());
-    }
-
-    /**
-     * @return BelongsToMany
-     */
-    public function usersWithoutAdmins(): BelongsToMany
-    {
-        return $this->users()->whereRole(Roles::USER()->getValue());
-    }
-
 }

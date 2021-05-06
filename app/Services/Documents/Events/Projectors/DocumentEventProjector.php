@@ -43,15 +43,6 @@ class DocumentEventProjector extends Projector
          */
         $loggedUser = auth()->user();
 
-        /**
-         * @var Document $document
-         */
-        $document = $storedEvent->event->document;
-
-        $document->users()->syncWithoutDetaching([$loggedUser->id => [
-            'last_download_at' => now()
-        ]]);
-
         $storedEvent->meta_data['download_by'] = $loggedUser->id;
 
         $repository->update($storedEvent);

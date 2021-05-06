@@ -47,6 +47,6 @@ trait HasUuidAttribute
      */
     public static function findByUuid(string $uuid): ?Model
     {
-        return static::where('uuid', $uuid)->first();
+        return static::where((new static())->getUuidKeyName(), $uuid)->first();
     }
 }

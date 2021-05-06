@@ -7,7 +7,7 @@ use App\Services\Projects\Http\Requests\CreateProjectRequest;
 use App\Services\Projects\Http\Requests\ShowProjectRequest;
 use App\Services\Projects\Models\Project;
 
-class ProjectController extends Controller
+class AdminProjectController extends Controller
 {
     /**
      * Show the project management screen.

@@ -45,7 +45,7 @@
                 @else
                     <div class="alert alert-info mb-0">
                         <p class="mb-0">
-                            {{ __('No users in this group.') }}
+                            {{ __('No users in this project.') }}
                         </p>
                     </div>
                 @endif

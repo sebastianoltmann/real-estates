@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Common\Traits\Eloquent\HasUuidAttribute;
-use App\Services\Documents\Models\Document;
 use App\Services\Permissions\Roles;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\Traits\HasProjects;
@@ -13,7 +12,6 @@ use Illuminate\Auth\Events\Registered;
 use App\Services\Users\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,17 +20,19 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use \Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 /**
  * Class User
  *
+ * @method static Builder byProject(Project $project = null)
  * @method static Builder admins(Project $project = null)
  * @method static Builder allAdmins()
  *
  * @property Collection ownRealEstate
  * @property Collection documents
  * @property Collection realEstates
+ * @property Project|null currentProject
  *
  * @package App\Models
  */
@@ -113,30 +113,19 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param Project|null $project
      * @return Builder
      */
-    public function scopeAdmins(Builder $query, Project $project = null)
+    public function scopeByProject(Builder $query, Project $project = null): Builder
     {
         if($project === null) $project = auth()->user()->currentProject;
-        return $this->scopeAllAdmins($query)
-            ->whereHas('projects', function(Builder $query) use ($project) {
-                $query->where($project->getForeignKey(), $project->getKey());
-        });
-    }
 
-    /**
-     * @param Builder $query
-     * @return Builder
-     */
-    public function scopeAllAdmins(Builder $query): Builder
-    {
-        return $query->whereHas('projects', function(Builder $query) {
-            $query->whereRole(Roles::ADMIN()->getValue());
+        return $query->whereHas('projects', function(Builder $query) use ($project){
+            $query->where('project_id', $project->id);
         });
     }
 
     /**
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return $this->getUuidKeyName();
     }
@@ -152,7 +141,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @return HasMany
      */
-    public function ownRealEstate(): HasMany
+    public function ownRealEstates(): HasMany
     {
         return $this->hasMany(RealEstate::class);
     }

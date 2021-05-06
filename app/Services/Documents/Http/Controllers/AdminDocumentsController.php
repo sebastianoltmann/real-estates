@@ -57,7 +57,7 @@ class AdminDocumentsController extends Controller
         try {
             CommandBus::handleWithTransaction(new StoreDocumentCommand($request->validated()));
             return Redirect::route('admin.documents.index')
-                ->withSuccessMsg('Document successfully added.');
+                ->withSuccessMsg(__('Document successfully created.'));
         } catch(\Exception $e) {
             return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
@@ -67,7 +67,8 @@ class AdminDocumentsController extends Controller
     {
         try {
             CommandBus::handleWithTransaction(new UpdateDocumentCommand($document, $request->validated()));
-            return Redirect::route('admin.documents.index');
+            return Redirect::route('admin.documents.index')
+                ->withSuccessMsg(__('Document ":name" successfully updated.', ['name' => $document->name]));
         } catch(\Exception $e) {
             return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }
@@ -87,7 +88,8 @@ class AdminDocumentsController extends Controller
     {
         try {
             CommandBus::handleWithTransaction(new DeleteDocumentCommand($document));
-            return Redirect::route('admin.documents.index');
+            return Redirect::route('admin.documents.index')
+                ->withSuccessMsg(__('Document ":name" successfully moved to trush.',['name' => $document->name]));
         } catch(\Exception $e) {
             return Redirect::back()->withInput()->withDangerMsg($e->getMessage());
         }

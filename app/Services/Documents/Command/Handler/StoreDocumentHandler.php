@@ -10,6 +10,7 @@ use App\Services\Documents\Models\Document;
 use App\Services\Documents\Models\DocumentCategory;
 use App\Models\User;
 use App\Services\Projects\ProjectServiceInterface;
+use App\Services\RealEstates\Models\RealEstate;
 use Illuminate\Support\Facades\Auth;
 
 class StoreDocumentHandler implements CommandHandler
@@ -30,6 +31,10 @@ class StoreDocumentHandler implements CommandHandler
         $document->category()->associate($documentCategory)->save();
         $document->project()->associate(Auth::user()->currentProject)->save();
         $document->setFileDocument($command->getFile());
+
+        if($command->getRealEstate() instanceof RealEstate){
+            $document->realEstates()->attach($command->getRealEstate());
+        }
 
     }
 }

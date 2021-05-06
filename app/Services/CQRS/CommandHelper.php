@@ -33,8 +33,11 @@ trait CommandHelper
         $reflectionClass = new ReflectionClass($this);
         $params = $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
         $output = [];
+
         foreach ($params as $param) {
             if($param->getName() === 'params') continue;
+
+            if(empty($this->{$param->getName()})) continue;
 
             if($this->{$param->getName()} instanceof Model) continue;
 

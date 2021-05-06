@@ -1,7 +1,6 @@
 <tr class="document-table-row @if($document->trashed())d-none @endif">
     <td class="document-table-column">
-        {{ $user->currentProject->alias | upper }} {{ $category->id }}
-        .{{ $document->id }}
+        {{ $document->alias }}
     </td>
     <td class="document-table-column">
         {{ $document->name }}

@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Services\Projects\Middleware\ProjectExist;
 use App\Services\Users\Http\Middleware\EnsureEmailAndPasswordIsVerified;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes;
 
 class Kernel extends HttpKernel
 {

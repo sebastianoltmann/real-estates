@@ -9,6 +9,8 @@ use App\Services\Documents\Models\Document;
 use App\Services\Documents\Policies\DocumentPolicy;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\Policies\ProjectPolicy;
+use App\Services\RealEstates\Models\RealEstate;
+use App\Services\RealEstates\Policies\RealEstatePolicy;
 use App\Services\Users\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -23,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         Project::class => ProjectPolicy::class,
         Document::class => DocumentPolicy::class,
         User::class => UserPolicy::class,
+        RealEstate::class => RealEstatePolicy::class
     ];
 
     /**

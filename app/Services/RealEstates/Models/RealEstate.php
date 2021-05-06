@@ -2,24 +2,32 @@
 
 namespace App\Services\RealEstates\Models;
 
+use App\Common\Traits\Eloquent\HasSlugAttribute;
 use App\Common\Traits\Eloquent\HasUuidAttribute;
 use App\Models\User;
 use App\Services\Documents\Models\Document;
 use App\Services\Projects\Models\Project;
+use App\Services\RealEstates\Factory\RealEstateFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Spatie\Translatable\HasTranslations;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * Class RealEstate
  *
  * @property Project|null project
- * @property User|null owner
- * @property Collection users
- * @property Collection documents
+ * @property User|null    owner
+ * @property bool         sold
+ * @property Collection   users
+ * @property Collection   documents
+ *
+ * @method static Builder ByProject(Project $project = null)
  *
  * @package App\Services\RealEstates\Models
  */
@@ -27,12 +35,14 @@ class RealEstate extends Model
 {
     use HasFactory,
         HasUuidAttribute,
-        HasTranslations;
+        HasSlugAttribute,
+        HasTranslations,
+        SoftDeletes;
 
     /**
      * @var string[]
      */
-    public $translatable = ['name'];
+    public $translatable = ['name', 'slug'];
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +50,7 @@ class RealEstate extends Model
      * @var string[]
      */
     protected $fillable = [
-        'type', 'name', 'alias'
+        'type', 'name', 'alias', 'slug',
     ];
 
     /**
@@ -48,7 +58,31 @@ class RealEstate extends Model
      */
     public function getRouteKeyName()
     {
-        return $this->getUuidKeyName();
+        return isAdminRequest() ? $this->getUuidKeyName() : $this->getSlugKeyName();
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return Factory
+     */
+    protected static function newFactory(): Factory
+    {
+        return new RealEstateFactory();
+    }
+
+    /**
+     * @param Builder      $query
+     * @param Project|null $project
+     * @return Builder
+     */
+    public function scopeByProject(Builder $query, Project $project = null)
+    {
+        if($project === null) $project = auth()->user()->currentProject;
+
+        return $query->whereHas('project', function(Builder $query) use ($project){
+            $query->whereId($project->id);
+        });
     }
 
     /**
@@ -56,13 +90,13 @@ class RealEstate extends Model
      */
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
      * @return BelongsToMany
      */
-    public function documents() :BelongsToMany
+    public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class);
     }
@@ -73,5 +107,13 @@ class RealEstate extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSoldAttribute(): bool
+    {
+        return $this->owner instanceof User;
     }
 }

@@ -25,6 +25,11 @@ class CreateUserCommand implements Command
      */
     protected array $projects;
 
+    /**
+     * @var string[]|null
+     */
+    protected array|null $real_estates = null;
+
 
     /**
      * CreateUserCommand constructor.
@@ -57,4 +62,13 @@ class CreateUserCommand implements Command
     {
         return $this->projects;
     }
+
+    /**
+     * @return string[]|null
+     */
+    public function getRealEstates(): ?array
+    {
+        return $this->real_estates;
+    }
+
 }

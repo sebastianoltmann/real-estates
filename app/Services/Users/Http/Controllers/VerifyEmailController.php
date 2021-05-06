@@ -28,6 +28,10 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(VerifyEmailRequest $request, User $user, string $hash): RedirectResponse
     {
+        if(!$user->hasVerifiedEmail() && $user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+
         if($user->hasVerifiedEmail() && $user->hasChangedPassword()) {
             return redirect()->intended(config('fortify.home') . '?verified=1');
         }

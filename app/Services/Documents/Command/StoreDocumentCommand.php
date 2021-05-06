@@ -5,6 +5,7 @@ namespace App\Services\Documents\Command;
 
 use App\Services\CQRS\Command;
 use App\Services\CQRS\CommandHelper;
+use App\Services\RealEstates\Models\RealEstate;
 use Illuminate\Http\UploadedFile;
 
 class StoreDocumentCommand implements Command
@@ -30,7 +31,10 @@ class StoreDocumentCommand implements Command
     /**
      * StoreDocumentCommand constructor.
      */
-    public function __construct(array $params)
+    public function __construct(
+        array $params,
+        protected RealEstate|null $realEstate = null
+    )
     {
         $this->setParams($params);
     }
@@ -57,5 +61,13 @@ class StoreDocumentCommand implements Command
     public function getFile(): ?UploadedFile
     {
         return $this->file;
+    }
+
+    /**
+     * @return RealEstate|null
+     */
+    public function getRealEstate(): ?RealEstate
+    {
+        return $this->realEstate;
     }
 }

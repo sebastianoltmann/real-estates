@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\Projects\Http\Controllers\ProjectController;
+use App\Services\Projects\Http\Controllers\AdminProjectController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
 use Laravel\Jetstream\Http\Controllers\Livewire\ApiTokenController;
@@ -29,8 +29,6 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
 
         // Teams...
         if(Jetstream::hasTeamFeatures()) {
-            Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
-            Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
             Route::put('/current-project', [CurrentTeamController::class, 'update'])->name('current-project.update');
 
             Route::get('/project-invitations/{invitation}', [TeamInvitationController::class, 'accept'])

@@ -5,6 +5,7 @@ namespace App\Actions\Jetstream;
 use App\Models\User;
 use App\Services\Permissions\Roles;
 use App\Services\Projects\Models\Project;
+use App\Services\Users\Facade\UserFacade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Contracts\CreatesTeams;
@@ -40,7 +41,7 @@ class CreateTeam implements CreatesTeams
         ]));
 
         $project->users()->attach(
-            User::allAdmins()->get()->pluck('id')->toArray(),
+            UserFacade::getAllAdmins()->pluck('id')->toArray(),
             ['role' => Roles::ADMIN()->getValue()]
         );
 

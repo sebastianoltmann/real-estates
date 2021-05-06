@@ -36,11 +36,12 @@ class Authenticate extends Middleware
         if(empty($guards)) {
             $guards = [null];
         }
+
         foreach($guards as $guard) {
             if($this->auth->guard($guard)->check()) {
-                if(($this->isAdminRequest($request)
+                if((isAdminRequest($request)
                         && $this->auth->user()->isAdmin()) ||
-                    (!$this->isAdminRequest($request)
+                    (!isAdminRequest($request)
                         && !$this->auth->user()->isAdmin())
                 ) {
                     return $this->auth->shouldUse($guard);
@@ -49,17 +50,5 @@ class Authenticate extends Middleware
         }
 
         $this->unauthenticated($request, $guards);
-    }
-
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    protected function isAdminRequest(Request $request): bool
-    {
-        return Str::startsWith(
-            $request->route()->action['prefix'],
-            RouteServiceProvider::PREFIX_ADMIN
-        );
     }
 }

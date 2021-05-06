@@ -3,7 +3,6 @@
 namespace App\Services\Documents\Models;
 
 use App\Common\Traits\Eloquent\HasUuidAttribute;
-use App\Models\User;
 use App\Services\Documents\Factories\DocumentCategoryFactory;
 use App\Services\Projects\Models\Project;
 use Carbon\Carbon;
@@ -12,9 +11,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * Class DocumentCategory
+ *
+ * @property Collection $documents
+ * @property Collection $documentsWithoutRealEstates
+ * @property Collection $documentsWithRealEstates
+ * @package App\Services\Documents\Models
+ */
 class DocumentCategory extends Model
 {
     use HasFactory,
@@ -58,28 +66,10 @@ class DocumentCategory extends Model
     }
 
     /**
-     * @param User|null    $user
      * @param Project|null $project
-     * @return \Illuminate\Database\Concerns\BuildsQueries|Builder|HasMany|mixed
+     * @return HasMany
      */
-    public function documentsByUserAndProject(User $user = null, Project $project = null)
-    {
-        if($user === null) $user = auth()->user();
-
-        if($project === null) $project = $user->currentProject;
-
-        return $this->documentsByProject($project)->when(!$user->isAdmin(), function(Builder $query) use ($user) {
-            $query->whereHas('users', function(Builder $query) use ($user) {
-                $query->whereUserId($user->id);
-            });
-        });
-    }
-
-    /**
-     * @param Project $project
-     * @return Builder|HasMany
-     */
-    public function documentsByProject(Project $project = null)
+    public function documentsByProject(Project $project = null): HasMany
     {
         if($project === null) $project = auth()->user()->currentProject;
 
@@ -94,5 +84,21 @@ class DocumentCategory extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function documentsWithoutRealEstates(): HasMany
+    {
+        return $this->documentsByProject()->whereDoesntHave('realEstates');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function documentsWithRealEstates(): HasMany
+    {
+        return $this->documentsByProject()->whereHas('realEstates');
     }
 }

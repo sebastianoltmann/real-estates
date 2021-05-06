@@ -20,8 +20,10 @@ class CreateRealEstatesTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('type')->nullable();
             $table->string('alias')->nullable();
+            $table->string('slug')->unique();
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

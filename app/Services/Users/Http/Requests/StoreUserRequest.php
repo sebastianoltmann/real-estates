@@ -28,6 +28,8 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'projects' => 'required|array',
             'projects.*' => 'uuid|exists:projects,uuid',
+            'real_estates' => 'nullable|array',
+            'real_estates.*' => 'uuid|exists:real_estates,uuid',
         ];
     }
 }

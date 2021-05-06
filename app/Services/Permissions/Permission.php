@@ -21,6 +21,10 @@ use MyCLabs\Enum\Enum;
  * @method static Permission USER_UPDATE()
  * @method static Permission USER_DELETE()
  * @method static Permission USER_READ()
+ * @method static Permission REAL_ESTATE_CREATE()
+ * @method static Permission REAL_ESTATE_UPDATE()
+ * @method static Permission REAL_ESTATE_DELETE()
+ * @method static Permission REAL_ESTATE_READ()
  * @package App\Services\Permissions
  */
 final class Permission extends Enum
@@ -39,5 +43,10 @@ final class Permission extends Enum
     private const USER_UPDATE = 'user:update';
     private const USER_DELETE = 'user:delete';
     private const USER_READ = 'user:read';
+
+    private const REAL_ESTATE_CREATE = 'real_estate:create';
+    private const REAL_ESTATE_UPDATE = 'real_estate:update';
+    private const REAL_ESTATE_DELETE = 'real_estate:delete';
+    private const REAL_ESTATE_READ = 'real_estate:read';
 
 }

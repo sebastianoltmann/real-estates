@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Translatable\HasTranslations;
 use App\Services\Documents\Traits\HasFileDocument;
@@ -23,6 +24,7 @@ use App\Services\Documents\Traits\HasFileDocument;
 /**
  * Class Document
  *
+ * @property string $alias
  * @property Project|null $project
  * @property DocumentCategory|null $documentCategory
  * @property DocumentCategory|null $category
@@ -53,6 +55,13 @@ class Document extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = ['name'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['alias'];
 
     /**
      * The event map for the model.
@@ -113,5 +122,17 @@ class Document extends Model implements HasMedia
     public function realEstates(): BelongsToMany
     {
         return $this->belongsToMany(RealEstate::class);
+    }
+
+    public function getAliasAttribute()
+    {
+        $alias = '';
+        if($project = auth()->user()->currentProject){
+            $alias .= Str::upper($project->alias) . '.';
+        }
+        if($category = $this->category){
+            $alias .= $category->id . '.';
+        }
+        return "{$alias}{$this->getKey()}";
     }
 }

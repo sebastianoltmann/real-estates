@@ -8,12 +8,15 @@ use App\Services\CQRS\QueryHandler;
 use App\Services\Permissions\Roles;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\ProjectServiceInterface;
+use App\Services\RealEstates\Repositories\RealEstateRepository;
 use App\Services\Users\Query\EditUserQuery;
 
 class EditUserHandler implements QueryHandler
 {
 
-    public function __construct()
+    public function __construct(
+        private RealEstateRepository $realEstateRepository
+    )
     {
     }
 
@@ -25,6 +28,7 @@ class EditUserHandler implements QueryHandler
     {
         return [
             'user' => $query->getUser(),
+            'realEstates' => $this->realEstateRepository->getByProject(),
             'projects' => Project::all()
         ];
     }

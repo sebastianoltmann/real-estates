@@ -32,6 +32,7 @@ class EditDocumentHandler implements QueryHandler
     {
         return [
             'document' => $query->getDocument(),
+            'realEstate' => $query->getRealEstate(),
             'categories' => DocumentCategory::all(),
             'user' => Auth::user(),
         ];

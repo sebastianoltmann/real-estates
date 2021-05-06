@@ -28,11 +28,5 @@ class ResetUserPassword implements ResetsUserPasswords
             'password' => Hash::make($input['password']),
             'password_changed_at' => now(),
         ])->save();
-
-        if(!$user->email_verified_at){
-            if($user->markEmailAsVerified()) {
-                event(new Verified($user));
-            }
-        }
     }
 }

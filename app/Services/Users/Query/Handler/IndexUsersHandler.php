@@ -7,10 +7,17 @@ use App\Services\CQRS\Query;
 use App\Services\CQRS\QueryHandler;
 use App\Services\Projects\ProjectService;
 use App\Services\Projects\ProjectServiceInterface;
+use App\Services\Users\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 
 class IndexUsersHandler implements QueryHandler
 {
+
+    public function __construct(
+        private UserRepository $userRepository
+    )
+    {
+    }
 
     /**
      * @param Query $query
@@ -19,7 +26,7 @@ class IndexUsersHandler implements QueryHandler
     public function execute(Query $query)
     {
         return [
-            'users' => Auth::user()->currentProject->usersWithoutAdmins,
+            'users' => $this->userRepository->getUsers(),
             'user' => auth()->user(),
         ];
     }
