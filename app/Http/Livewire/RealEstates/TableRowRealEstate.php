@@ -17,4 +17,12 @@ class TableRowRealEstate extends Component
     {
         return view('livewire.real-estates.table-row-real-estate');
     }
+
+    /**
+     * Write code on Method
+     */
+    public function delete()
+    {
+        $this->realEstate->delete();
+    }
 }

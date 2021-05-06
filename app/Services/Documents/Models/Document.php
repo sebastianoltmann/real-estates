@@ -74,6 +74,19 @@ class Document extends Model implements HasMedia
         'updated' => DocumentHasBeenUpdated::class,
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function(Document $document) {
+            if($document->forceDeleting){
+                $realEstates = $document->realEstates;
+                if(!$realEstates->isEmpty()){
+                    $document->realEstates()->sync([]);
+                }
+            }
+        });
+    }
+
     /**
      * @return string
      */

@@ -29,10 +29,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
  * @method static Builder admins(Project $project = null)
  * @method static Builder allAdmins()
  *
- * @property Collection ownRealEstate
- * @property Collection documents
- * @property Collection realEstates
- * @property Project|null currentProject
+ * @property Collection $ownRealEstates
+ * @property Collection $documents
+ * @property Collection $realEstates
+ * @property Project|null $currentProject
  *
  * @package App\Models
  */
@@ -97,6 +97,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $dispatchesEvents = [
         'created' => Registered::class,
     ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function(User $user) {
+            if($user->forceDeleting){
+                $realEstates = $user->ownRealEstates;
+                if(!$realEstates->isEmpty()){
+                    $user->ownRealEstates()->update([$user->getForeignKey() => null]);
+                }
+            }
+        });
+    }
 
     /**
      * Create a new factory instance for the model.

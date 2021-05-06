@@ -54,6 +54,23 @@ class RealEstate extends Model
     ];
 
     /**
+     *
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function(RealEstate $realEstate) {
+            if($realEstate->forceDeleting){
+                $documents = $realEstate->documents;
+                if(!$documents->isEmpty()){
+                    $realEstate->documents()->sync([]);
+                    $documents->each->forceDelete();
+                }
+            }
+        });
+    }
+
+    /**
      * @return string
      */
     public function getRouteKeyName()
