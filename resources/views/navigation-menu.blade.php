@@ -14,10 +14,10 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @can('viewAny', \App\Services\Documents\Models\Document::class)
-                <x-jet-nav-link href="{{ route('admin.documents.index') }}"
-                                :active="request()->routeIs('admin.documents.index', 'admin.documents.edit', 'admin.documents.create')">
-                    {{ __('Documents') }}
-                </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('admin.documents.index') }}"
+                                    :active="request()->routeIs('admin.documents.index', 'admin.documents.edit', 'admin.documents.create')">
+                        {{ __('Documents') }}
+                    </x-jet-nav-link>
                 @endcan
 
                 @can('viewAny', \App\Models\User::class)
@@ -33,6 +33,13 @@
                                     'admin.realEstates.documents.create', 'admin.realEstates.documents.edit'
                                     )">
                         {{ __('Real estates') }}
+                    </x-jet-nav-link>
+                @endcan
+
+                @can('viewAny-trash')
+                    <x-jet-nav-link href="{{ route('admin.trash.index') }}"
+                                    :active="request()->routeIs('admin.trash.index')">
+                        {{ __('Trash') }}
                     </x-jet-nav-link>
                 @endcan
             </ul>
@@ -153,9 +160,10 @@
                     <x-slot name="content">
                         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                             @if($localeCode !== LaravelLocalization::getCurrentLocale())
-                            <x-jet-dropdown-link hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, request()->route()->parameters) }}">
-                                {{ $localeCode | upper }}
-                            </x-jet-dropdown-link>
+                                <x-jet-dropdown-link hreflang="{{ $localeCode }}"
+                                                     href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, request()->route()->parameters) }}">
+                                    {{ $localeCode | upper }}
+                                </x-jet-dropdown-link>
                             @endif
                         @endforeach
                     </x-slot>
