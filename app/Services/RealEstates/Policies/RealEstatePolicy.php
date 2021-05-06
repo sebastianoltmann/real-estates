@@ -94,7 +94,7 @@ class RealEstatePolicy
      */
     public function restore(User $user, RealEstate $realEstate)
     {
-        return $user->hasProjectPermission(Permission::REAL_ESTATE_DELETE()->getValue());
+        return $user->hasProjectPermission(Permission::REAL_ESTATE_RESTORE()->getValue());
     }
 
     /**

@@ -90,7 +90,7 @@ class UserPolicy
     public function restore(User $user, User $model)
     {
         return $user->hasProjectPermission(
-            Permission::USER_DELETE()->getValue()
+            Permission::USER_RESTORE()->getValue()
         );
     }
 

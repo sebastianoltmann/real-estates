@@ -85,7 +85,7 @@ class DocumentPolicy
      */
     public function restore(User $user, Document $document)
     {
-        //
+        return $user->hasProjectPermission(Permission::DOCUMENT_RESTORE()->getValue());
     }
 
     /**
@@ -97,6 +97,6 @@ class DocumentPolicy
      */
     public function forceDelete(User $user, Document $document)
     {
-        //
+        return $user->hasProjectPermission(Permission::DOCUMENT_DELETE()->getValue());
     }
 }
