@@ -11,8 +11,10 @@ use App\Services\Projects\Models\Project;
 use App\Services\Projects\Policies\ProjectPolicy;
 use App\Services\RealEstates\Models\RealEstate;
 use App\Services\RealEstates\Policies\RealEstatePolicy;
+use App\Services\Trash\Policies\TrashPolicy;
 use App\Services\Users\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('viewAny-trash', [TrashPolicy::class, 'viewAny']);
     }
 }

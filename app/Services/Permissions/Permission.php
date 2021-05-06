@@ -25,6 +25,7 @@ use MyCLabs\Enum\Enum;
  * @method static Permission REAL_ESTATE_UPDATE()
  * @method static Permission REAL_ESTATE_DELETE()
  * @method static Permission REAL_ESTATE_READ()
+ * @method static Permission TRASH_READ()
  * @package App\Services\Permissions
  */
 final class Permission extends Enum
@@ -49,4 +50,5 @@ final class Permission extends Enum
     private const REAL_ESTATE_DELETE = 'real_estate:delete';
     private const REAL_ESTATE_READ = 'real_estate:read';
 
+    private const TRASH_READ = 'trash:read';
 }
