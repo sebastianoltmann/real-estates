@@ -48,6 +48,10 @@ return [
 
     "projects" => "projects",
 
-    'trash' => 'admin/trash/{resource?}',
+    'trash' => [
+        'index' => "{$adminPrefix}/trash/{resource?}",
+        'restore' => "{$adminPrefix}/trash/{resource}/restore/{model}",
+        'forceDelete' => "{$adminPrefix}/trash/{resource}/force-delete/{model}",
+    ]
 
 ];

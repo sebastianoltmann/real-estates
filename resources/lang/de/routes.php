@@ -47,4 +47,11 @@ return [
     ],
 
     'projects' => 'projekte',
+
+    'trash' => [
+        'index' => "{$adminPrefix}/mull/{resource?}",
+        'restore' => "{$adminPrefix}/mull/{resource}/wiederherstellen/{model}",
+        'forceDelete' => "{$adminPrefix}/mull/{resource}/loschen-erzwingen/{model}",
+    ]
+
 ];
