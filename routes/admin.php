@@ -5,6 +5,7 @@ use App\Services\Documents\Http\Controllers\AdminDocumentsController;
 use App\Services\Projects\Http\Controllers\AdminProjectController;
 use App\Services\RealEstates\Http\Controllers\AdminRealEstatesController;
 use App\Services\RealEstates\Http\Controllers\AdminRealEstatesDocumentsController;
+use App\Services\Trash\Http\Controllers\AdminTrashController;
 use App\Services\Users\Http\Controllers\AdminUsersController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
@@ -34,6 +35,9 @@ Route::resourceLang('documents', AdminDocumentsController::class);
 Route::resourceLang('real-estates', AdminRealEstatesController::class)->names('realEstates');
 Route::resourceLang('real-estates.documents', AdminRealEstatesDocumentsController::class)
     ->names('realEstates.documents')
-    ->except(['index','show']);
+    ->except(['index', 'show']);
+
+Route::get(LaravelLocalization::transRoute('routes.trash'), [AdminTrashController::class, 'index'])->name('trash.index');
+
 
 //Route::resource(__('routes.real_estates') . '.' . __('routes.documents'), AdminRealEstatesDocumentsController::class, ['names' => 'realEstates.documents']);

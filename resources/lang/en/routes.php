@@ -47,4 +47,7 @@ return [
     ],
 
     "projects" => "projects",
+
+    'trash' => 'admin/trash/{resource?}',
+
 ];
