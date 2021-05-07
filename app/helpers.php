@@ -10,7 +10,7 @@ if(!function_exists('isAdminRequest')){
 
         return Str::startsWith(
             $request->route()->action['as'] ?? '',
-            RouteServiceProvider::NAME_ADMIN
+            [RouteServiceProvider::NAME_ADMIN, RouteServiceProvider::NAME_LIVEWIRE]
         );
     }
 }

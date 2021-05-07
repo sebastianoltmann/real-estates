@@ -37,8 +37,6 @@ trait CommandHelper
         foreach ($params as $param) {
             if($param->getName() === 'params') continue;
 
-            if(empty($this->{$param->getName()})) continue;
-
             if($this->{$param->getName()} instanceof Model) continue;
 
             $output[$param->getName()] = $this->{$param->getName()};

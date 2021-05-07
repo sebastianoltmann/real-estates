@@ -27,6 +27,9 @@ class RouteServiceProvider extends ServiceProvider
 
 
     public const NAME_ADMIN = 'admin';
+    public const NAME_LIVEWIRE = 'livewire';
+
+
 
     public function register()
     {

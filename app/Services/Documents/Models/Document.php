@@ -9,6 +9,8 @@ use App\Services\Documents\Events\DocumentHasBeenUpdated;
 use App\Services\Documents\Factories\DocumentFactory;
 use App\Services\Projects\Models\Project;
 use App\Services\RealEstates\Models\RealEstate;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +31,8 @@ use App\Services\Documents\Traits\HasFileDocument;
  * @property DocumentCategory|null $documentCategory
  * @property DocumentCategory|null $category
  * @property Collection|null $realEstates
+ * @property bool $published
+ * @property Carbon|null $published_at
  * @package App\Services\Documents\Models
  */
 class Document extends Model implements HasMedia
@@ -54,7 +58,7 @@ class Document extends Model implements HasMedia
      *
      * @var string[]
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'published_at'];
 
     /**
      * The accessors to append to the model's array form.
@@ -62,6 +66,15 @@ class Document extends Model implements HasMedia
      * @var array
      */
     protected $appends = ['alias'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
 
     /**
      * The event map for the model.
@@ -106,6 +119,20 @@ class Document extends Model implements HasMedia
     }
 
     /**
+     * @param Builder      $query
+     * @param Project|null $project
+     * @return Builder
+     */
+    public function scopeByProject(Builder $query, Project $project = null)
+    {
+        if($project === null) $project = auth()->user()->currentProject;
+
+        return $query->whereHas('project', function(Builder $query) use ($project){
+            $query->whereId($project->id);
+        });
+    }
+
+    /**
      * @return BelongsTo
      */
     public function project(): BelongsTo
@@ -147,5 +174,13 @@ class Document extends Model implements HasMedia
             $alias .= $category->id . '.';
         }
         return "{$alias}{$this->getKey()}";
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPublishedAttribute(){
+        if(!$this->published_at) return false;
+        return now()->gt($this->published_at);
     }
 }

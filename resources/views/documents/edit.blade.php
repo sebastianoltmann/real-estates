@@ -103,6 +103,66 @@
                     </x-form-group>
                 @endif
 
+
+                <div x-data="publishDocument()"
+                     x-init="
+                     published = @if($document->published)true @else false @endif;
+                     @if($document->published_at)publishedAtFirst = '{{ $document->published_at->format('Y-m-d') }}'; @endif
+                     @if($document->published_at)publishedAt = '{{ $document->published_at->format('Y-m-d')  }}'; @endif
+                     hasCustomPublishedData = @if(!$document->published && $document->published_at)true @else false @endif
+                         "
+                     class="form-group"
+                >
+                    <label>Publish</label>
+                    <div class="btn-group-toggle d-flex align-items-center">
+                        <label class="btn mr-1"
+                               :class="{
+                                    'btn-outline-secondary': !published,
+                                    'btn-secondary': published
+                                }"
+                        >
+                            <template x-if="published">
+                                <span>Published</span>
+                            </template>
+                            <template x-if="!published">
+                                <span>No published</span>
+                            </template>
+
+                            <input type="checkbox"
+                                   class="btn-check"
+                                   x-model="published"
+                                   autocomplete="off"
+                                   @change="togglePublishNow">
+                        </label>
+
+                        <label class="btn mr-1"
+                               :class="{
+                                    'btn-outline-secondary': !hasCustomPublishedData,
+                                    'btn-secondary': hasCustomPublishedData
+                                }"
+                        >
+                            Custom publish date
+
+                            <input type="checkbox"
+                                   class="btn-check"
+                                   x-model="hasCustomPublishedData"
+                                   autocomplete="off"
+                                   @change="toggleCustomPublishDate">
+                        </label>
+
+                        <span x-show="hasCustomPublishedData"
+                              class="position-relative">
+                            <input
+                                x-ref="input"
+                                class="form-control"
+                                type="date"
+                                :value="publishedAt"
+                                name="published_at"
+
+                            />
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <div class="card-footer d-flex align-items-center">

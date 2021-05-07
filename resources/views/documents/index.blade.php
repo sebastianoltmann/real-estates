@@ -42,6 +42,7 @@
                             <th class="h5 font-weight-bolder document-table-column-id"
                                 width="200px">{{ __('No.') }}</th>
                             <th class="h5 font-weight-bolder document-table-name">{{ __('Name') }}</th>
+                            <th class="h5 font-weight-bolder document-table-actions">{{ __('Published') }}</th>
                             <th class="h5 font-weight-bolder document-table-actions text-right">{{ __('Actions') }}</th>
                         </tr>
 

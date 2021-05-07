@@ -37,7 +37,7 @@
                     </thead>
                     <tbody>
                     @foreach($realEstates as $realEstate)
-                        @livewire('real-estates.table-row-user', compact('realEstate'))
+                        @livewire('real-estates.table-row-real-estate', compact('realEstate'))
                     @endforeach
 
                     </tbody>

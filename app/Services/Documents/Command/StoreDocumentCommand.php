@@ -29,6 +29,11 @@ class StoreDocumentCommand implements Command
     protected string $category;
 
     /**
+     * @var string|null
+     */
+    protected string|null $published_at = null;
+
+    /**
      * StoreDocumentCommand constructor.
      */
     public function __construct(
@@ -69,5 +74,13 @@ class StoreDocumentCommand implements Command
     public function getRealEstate(): ?RealEstate
     {
         return $this->realEstate;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPublishedAt(): ?string
+    {
+        return $this->published_at;
     }
 }

@@ -13,6 +13,5 @@ class IndexRealEstateQuery implements Query
      */
     public function __construct()
     {
-        // TODO: Implement __construct() method.
     }
 }

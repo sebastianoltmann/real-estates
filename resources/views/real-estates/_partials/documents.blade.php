@@ -21,14 +21,27 @@
                         </div>
                         <div class="card-body">
                             <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>{{ __('Alias') }}</th>
+                                    <th>{{ __('Name') }}</th>
+                                    <th>{{ __('Published') }}</th>
+                                    <th class="text-right">{{ __('Actions') }}</th>
+                                </tr>
+                                </thead>
                                 @foreach($documents as $document)
                                     <tr>
                                         <td>{{ $document->alias }}</td>
                                         <td>{{ $document->name }}</td>
+                                        <td>
+                                            @livewire('documents.published-column', [
+                                                'document' => $document
+                                            ])
+                                        </td>
                                         <td class="text-right">
-                                            <div class="mb-0 d-flex align-items-center justify-content-end">
+                                            <div class="d-flex align-items-center justify-content-end">
                                                 @can('view', $document)
-                                                    <a class="btn btn-sm btn-link"
+                                                    <a class="btn btn-sm btn-link text-nowrap"
                                                        href="{{ route('admin.documents.show', $document) }}">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                              fill="currentColor" class="bi bi-cloud-arrow-down mr-2"
@@ -43,7 +56,7 @@
                                                     </a>
                                                 @endcan
                                                 @can('update', $document)
-                                                    <a class="btn btn-sm btn-link"
+                                                    <a class="btn btn-sm btn-link text-nowrap"
                                                        href="{{ route('admin.realEstates.documents.edit', [$realEstate, $document]) }}">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                              fill="currentColor" class="bi bi-pen mr-2"
@@ -56,7 +69,7 @@
                                                 @endcan
 
                                                 @can('delete', $document)
-                                                    <form class="d-inline-flex align-items-center"
+                                                    <form class="d-inline-flex align-items-center text-nowrap"
                                                           method="post"
                                                           action="{{ route('admin.realEstates.documents.destroy', [$realEstate,$document]) }}">
                                                         @method('delete')

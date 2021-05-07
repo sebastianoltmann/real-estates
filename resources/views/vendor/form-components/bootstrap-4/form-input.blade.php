@@ -1,5 +1,5 @@
 <div class="@if($type === 'hidden') d-none @else form-group @endif">
-    <x-form-label :label="$label" :for="$attributes->get('id') ?: $id()"/>
+    <x-form-label :label="$type === 'file' ? 'File' : $label" :for="$attributes->get('id') ?: $id()"/>
 
     <div class="input-group {{ $hasError($name) ? 'is-invalid' : '' }}">
         @isset($prepend)

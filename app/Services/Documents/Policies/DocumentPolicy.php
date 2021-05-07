@@ -34,11 +34,16 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document)
     {
+        if(!$user->hasProjectPermission(Permission::DOCUMENT_READ()->getValue()))
+            return false;
+
         if($user->isAdmin()) return true;
 
-        if(!$user->documents->contains($document)) return false;
 
-        return $user->hasProjectPermission(Permission::DOCUMENT_READ()->getValue());
+        // TODO: change checking document for user
+        return $user->documents
+            && $user->documents->contains($document)
+            && $document->published;
     }
 
     /**

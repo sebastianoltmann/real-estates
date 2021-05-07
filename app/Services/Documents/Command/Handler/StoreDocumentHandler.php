@@ -8,8 +8,6 @@ use App\Services\CQRS\CommandHandler;
 use App\Services\Documents\Command\StoreDocumentCommand;
 use App\Services\Documents\Models\Document;
 use App\Services\Documents\Models\DocumentCategory;
-use App\Models\User;
-use App\Services\Projects\ProjectServiceInterface;
 use App\Services\RealEstates\Models\RealEstate;
 use Illuminate\Support\Facades\Auth;
 

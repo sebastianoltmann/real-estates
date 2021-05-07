@@ -5,6 +5,11 @@
     <td class="document-table-column">
         {{ $document->name }}
     </td>
+    <td class="document-table-column">
+        @livewire('documents.published-column', [
+            'document' => $document,
+        ])
+    </td>
     <td class="document-table-column text-right">
         @can('view', $document)
             <a href="{{ route('admin.documents.show', $document) }}" class="btn btn-dark" target="_blank">
