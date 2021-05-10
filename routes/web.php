@@ -6,6 +6,7 @@ use App\Services\Users\Http\Controllers\VerifyEmailController;
 use App\Services\Users\Http\Controllers\EmailVerificationPromptController;
 use App\Services\Users\Http\Controllers\EmailVerificationNotificationController;
 use App\Providers\RouteServiceProvider;
+use App\Services\Pages\Http\Controllers\PagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,8 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
     ->name('verification.send');
 
 
-
+Route::get('page/{slug}', [PagesController::class, 'show'])->name('pages.show')
+    ->where('slug', '[\w\s\-_\/]+');
 
 Route::group([
     'middleware' => ['auth:sanctum', 'auth', 'verified']

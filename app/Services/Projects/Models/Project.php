@@ -23,6 +23,7 @@ use Spatie\Translatable\HasTranslations;
  * @property Collection realEstates
  * @property Collection projectDomains
  * @property Collection documents
+ * @property string alias
  *
  * @method static flushQueryCache
  *
