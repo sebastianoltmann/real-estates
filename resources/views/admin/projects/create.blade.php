@@ -6,6 +6,6 @@
     </x-slot>
 
     <div>
-        @livewire('teams.create-team-form')
+        @livewire('projects.create-project-form')
     </div>
 </x-app-layout>

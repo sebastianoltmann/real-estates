@@ -9,7 +9,7 @@ use App\Services\Trash\Http\Controllers\AdminTrashController;
 use App\Services\Users\Http\Controllers\AdminUsersController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
-use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
+use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Jetstream;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -26,8 +26,7 @@ if(Jetstream::hasTeamFeatures()) {
     ]);
 }
 
-
-Route::get('/user/profile', [UserProfileController::class, 'show'])
+Route::get('admin/user/profile', [UserProfileController::class, 'show'])
     ->name('profile.show');
 
 Route::resourceLang('users', AdminUsersController::class);

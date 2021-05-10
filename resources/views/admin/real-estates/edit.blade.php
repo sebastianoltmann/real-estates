@@ -42,7 +42,7 @@
 
             <div class="card-body">
 
-                @include('real-estates._partials.form')
+                @include('admin.real-estates._partials.form')
 
             </div>
 
@@ -75,7 +75,7 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                @include('real-estates._partials.documents')
+                @include('admin.real-estates._partials.documents')
             </div>
         </div>
 
@@ -83,7 +83,7 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                @include('real-estates._partials.global-documents')
+                @include('admin.real-estates._partials.global-documents')
             </div>
         </div>
     @endif

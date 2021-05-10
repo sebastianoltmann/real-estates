@@ -15,7 +15,7 @@ class TableRowRealEstate extends Component
 
     public function render()
     {
-        return view('livewire.real-estates.table-row-real-estate');
+        return view('admin.real-estates._partials.table-row-real-estate');
     }
 
     /**

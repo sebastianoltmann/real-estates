@@ -14,7 +14,7 @@ class TableRowUser extends Component
 
     public function render()
     {
-        return view('livewire.users.table-row-user');
+        return view('admin.users._partials.table-row-user');
     }
 
     /**

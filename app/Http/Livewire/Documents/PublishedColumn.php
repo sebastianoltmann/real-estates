@@ -15,7 +15,7 @@ class PublishedColumn extends Component
 
     public function render()
     {
-        return view('livewire.documents.published-column');
+        return view('admin.documents._partials.published-column');
     }
 
     public function togglePublished()

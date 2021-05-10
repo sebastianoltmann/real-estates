@@ -21,8 +21,6 @@ class TableRowDocument extends Component
      */
     public DocumentCategory $category;
 
-    public $search = false;
-
     /**
      * @var User
      */
@@ -30,7 +28,7 @@ class TableRowDocument extends Component
 
     public function render()
     {
-        return view('livewire.documents.table-row-document');
+        return view('admin.documents._partials.table-row-document');
     }
 
     /**

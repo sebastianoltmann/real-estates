@@ -1,4 +1,4 @@
-@extends('documents.edit',[
+@extends('admin.documents.edit',[
     'action' => route($document->id ? 'admin.realEstates.documents.update' : 'admin.realEstates.documents.store', [$realEstate, $document])
 ])
 

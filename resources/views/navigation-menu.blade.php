@@ -80,7 +80,7 @@
 
 
                             @php $projects = Auth::user()->allProjects(); @endphp
-                            @if($projects->count() > 1);
+                            @if($projects->count() > 1)
                             <hr class="dropdown-divider">
                             <!-- Team Switcher -->
                             <h6 class="dropdown-header">
@@ -120,7 +120,8 @@
                                 {{ __('Manage Account') }}
                             </h6>
 
-                            <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                            <x-jet-dropdown-link
+                                href="{{ route(auth()->user()->isAdmin() ? 'admin.profile.show' : 'profile.show') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
 
