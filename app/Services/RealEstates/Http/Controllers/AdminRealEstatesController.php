@@ -30,7 +30,7 @@ class AdminRealEstatesController extends Controller
      */
     public function index()
     {
-        return view('real-estates.index', QueryDispatcher::execute(new IndexRealEstateQuery()));
+        return view('admin.real-estates.index', QueryDispatcher::execute(new IndexRealEstateQuery()));
     }
 
     /**
@@ -46,12 +46,12 @@ class AdminRealEstatesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\RealEstate $realEstate
+     * @param RealEstate $realEstate
      * @return \Illuminate\Http\Response
      */
     public function edit(RealEstate $realEstate)
     {
-        return view('real-estates.edit', QueryDispatcher::execute(new EditRealEstateQuery($realEstate)));
+        return view('admin.real-estates.edit', QueryDispatcher::execute(new EditRealEstateQuery($realEstate)));
     }
 
     /**
@@ -76,7 +76,7 @@ class AdminRealEstatesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\RealEstate $realEstate
+     * @param RealEstate $realEstate
      * @return \Illuminate\Http\Response
      */
     public function show(RealEstate $realEstate)
@@ -87,6 +87,7 @@ class AdminRealEstatesController extends Controller
     /**
      * @param UpdateRealEstateRequest $request
      * @param RealEstate              $realEstate
+     * @return mixed
      */
     public function update(UpdateRealEstateRequest $request, RealEstate $realEstate)
     {

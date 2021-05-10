@@ -29,7 +29,7 @@ class AdminDocumentsController extends Controller
 
     public function index()
     {
-        return view('documents.index', QueryDispatcher::execute(new IndexDocumentQuery(Auth::user())));
+        return view('admin.documents.index', QueryDispatcher::execute(new IndexDocumentQuery(Auth::user())));
     }
 
     /**
@@ -45,7 +45,7 @@ class AdminDocumentsController extends Controller
      */
     public function edit(Document $document)
     {
-        return view('documents.edit', QueryDispatcher::execute(new EditDocumentQuery($document)));
+        return view('admin.documents.edit', QueryDispatcher::execute(new EditDocumentQuery($document)));
     }
 
     /**

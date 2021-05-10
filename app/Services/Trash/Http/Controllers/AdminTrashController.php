@@ -23,7 +23,7 @@ class AdminTrashController extends Controller
      */
     public function index(IndexTrashRequest $request, string $resource = 'documents')
     {
-        return view('trash.index', QueryDispatcher::execute(new IndexTrashQuery($resource)));
+        return view('admin.trash.index', QueryDispatcher::execute(new IndexTrashQuery($resource)));
     }
 
     /**

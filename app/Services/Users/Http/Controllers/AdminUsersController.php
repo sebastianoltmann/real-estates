@@ -27,7 +27,7 @@ class AdminUsersController extends Controller
 
     public function index()
     {
-        return view('users.index', QueryDispatcher::execute(new IndexUsersQuery()));
+        return view('admin.users.index', QueryDispatcher::execute(new IndexUsersQuery()));
     }
 
     /**
@@ -45,7 +45,7 @@ class AdminUsersController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', QueryDispatcher::execute(new EditUserQuery($user)));
+        return view('admin.users.edit', QueryDispatcher::execute(new EditUserQuery($user)));
     }
 
     /**

@@ -18,9 +18,9 @@ class AdminProjectController extends Controller
      */
     public function show(ShowProjectRequest $request, Project $project)
     {
-        return view('teams.show', [
+        return view('admin.projects.show', [
             'user' => $request->user(),
-            'team' => $project,
+            'project' => $project,
         ]);
     }
 
@@ -32,7 +32,7 @@ class AdminProjectController extends Controller
      */
     public function create(CreateProjectRequest $request)
     {
-        return view('teams.create', [
+        return view('admin.projects.create', [
             'user' => $request->user(),
         ]);
     }

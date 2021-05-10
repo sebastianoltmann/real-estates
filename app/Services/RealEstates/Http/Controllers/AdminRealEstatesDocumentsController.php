@@ -40,7 +40,7 @@ class AdminRealEstatesDocumentsController extends Controller
      */
     public function edit(RealEstate $realEstate, Document $document)
     {
-        return view('real-estates.documents.edit', QueryDispatcher::execute(
+        return view('admin.real-estates.documents.edit', QueryDispatcher::execute(
             new EditDocumentQuery($document, $realEstate)
         ));
     }
