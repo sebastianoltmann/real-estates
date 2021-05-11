@@ -6,7 +6,7 @@ namespace App\Services\RealEstates\Query;
 use App\Services\CQRS\Query;
 use App\Services\RealEstates\Models\RealEstate;
 
-class EditRealEstateQuery implements Query
+class AdminEditRealEstateQuery implements Query
 {
 
     /**

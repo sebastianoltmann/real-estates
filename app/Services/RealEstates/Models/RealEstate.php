@@ -6,6 +6,7 @@ use App\Common\Traits\Eloquent\HasSlugAttribute;
 use App\Common\Traits\Eloquent\HasUuidAttribute;
 use App\Models\User;
 use App\Services\Documents\Models\Document;
+use App\Services\Eloquent\TranslatableBuilder;
 use App\Services\Projects\Models\Project;
 use App\Services\RealEstates\Factory\RealEstateFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -132,5 +133,16 @@ class RealEstate extends Model
     public function getSoldAttribute(): bool
     {
         return $this->owner instanceof User;
+    }
+
+    /**
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new TranslatableBuilder($query);
     }
 }

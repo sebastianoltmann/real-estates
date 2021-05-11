@@ -11,8 +11,8 @@ use App\Services\RealEstates\Command\UpdateRealEstateCommand;
 use App\Services\RealEstates\Http\Requests\CreateRealEstateRequest;
 use App\Services\RealEstates\Http\Requests\UpdateRealEstateRequest;
 use App\Services\RealEstates\Models\RealEstate;
-use App\Services\RealEstates\Query\EditRealEstateQuery;
-use App\Services\RealEstates\Query\IndexRealEstateQuery;
+use App\Services\RealEstates\Query\AdminEditRealEstateQuery;
+use App\Services\RealEstates\Query\AdminIndexRealEstateQuery;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminRealEstatesController extends Controller
@@ -30,7 +30,7 @@ class AdminRealEstatesController extends Controller
      */
     public function index()
     {
-        return view('real-estates.index', QueryDispatcher::execute(new IndexRealEstateQuery()));
+        return view('real-estates.index', QueryDispatcher::execute(new AdminIndexRealEstateQuery()));
     }
 
     /**
@@ -51,7 +51,7 @@ class AdminRealEstatesController extends Controller
      */
     public function edit(RealEstate $realEstate)
     {
-        return view('real-estates.edit', QueryDispatcher::execute(new EditRealEstateQuery($realEstate)));
+        return view('real-estates.edit', QueryDispatcher::execute(new AdminEditRealEstateQuery($realEstate)));
     }
 
     /**

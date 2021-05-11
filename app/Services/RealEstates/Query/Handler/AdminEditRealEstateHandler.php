@@ -6,10 +6,10 @@ namespace App\Services\RealEstates\Query\Handler;
 use App\Services\CQRS\Query;
 use App\Services\CQRS\QueryHandler;
 use App\Services\Documents\Models\DocumentCategory;
-use App\Services\RealEstates\Query\EditRealEstateQuery;
+use App\Services\RealEstates\Query\AdminEditRealEstateQuery;
 use App\Services\Users\Repositories\UserRepository;
 
-class EditRealEstateHandler implements QueryHandler
+class AdminEditRealEstateHandler implements QueryHandler
 {
     public function __construct(
         private UserRepository $userRepository
@@ -18,7 +18,7 @@ class EditRealEstateHandler implements QueryHandler
     }
 
     /**
-     * @param EditRealEstateQuery $query
+     * @param AdminEditRealEstateQuery $query
      * @return mixed|void
      */
     public function execute(Query $query)

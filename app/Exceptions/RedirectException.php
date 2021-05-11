@@ -13,6 +13,10 @@ class RedirectException extends Exception implements Redirectable
      */
     protected $route;
 
+    /**
+     * @var
+     */
+    protected $params;
 
     /**
      * @param string $route
@@ -25,10 +29,28 @@ class RedirectException extends Exception implements Redirectable
     }
 
     /**
+     * @param array $params
+     * @return $this
+     */
+    public function withParams(array $params): self
+    {
+        $this->params = $params;
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function route(): ?string
     {
         return $this->route;
+    }
+
+    /**
+     * @return array
+     */
+    public function params(): array
+    {
+        return $this->params ?? [];
     }
 }

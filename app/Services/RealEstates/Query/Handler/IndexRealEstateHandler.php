@@ -5,28 +5,27 @@ namespace App\Services\RealEstates\Query\Handler;
 
 use App\Services\CQRS\Query;
 use App\Services\CQRS\QueryHandler;
-use App\Services\RealEstates\Query\IndexRealEstateQuery;
-use App\Services\RealEstates\Repositories\RealEstateRepository;
+use App\Services\RealEstates\Exceptions\OneRealEstateAvailableException;
+use App\Services\RealEstates\Models\RealEstate;
+use App\Services\Users\Exceptions\AuthorizeSignatureExpiredException;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Redirect;
 
 class IndexRealEstateHandler implements QueryHandler
 {
 
-    public function __construct(
-        private RealEstateRepository $realEstateRepository
-    )
-    {
-    }
-
     /**
-     * @param IndexRealEstateQuery $query
+     * @param Query $query
      * @return mixed|void
      */
     public function execute(Query $query)
     {
-        return [
-            'realEstates' => $this->realEstateRepository
-                ->getByProject()
-                ->sortBy('user_id'),
-        ];
+        $realEstates = RealEstate::paginate();
+        if($realEstates->count() === 1){
+            throw App::make(OneRealEstateAvailableException::class)
+                ->redirectTo('realEstates.show')
+                ->withParams(['real_estate' => $realEstates->first()]);
+        }
+        return compact('realEstates');
     }
 }

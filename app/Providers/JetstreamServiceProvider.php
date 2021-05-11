@@ -81,7 +81,8 @@ class JetstreamServiceProvider extends ServiceProvider
 
         Jetstream::role(Roles::USER()->getValue(), __('User'), [
             Permission::READ()->getValue(),
-            Permission::DOCUMENT_READ()->getValue()
+            Permission::DOCUMENT_READ()->getValue(),
+            Permission::REAL_ESTATE_READ()->getValue(),
         ]);
     }
 }
