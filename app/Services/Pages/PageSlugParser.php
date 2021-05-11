@@ -11,26 +11,21 @@ use Illuminate\Support\Str;
 
 class PageSlugParser
 {
-
-    const NAMESPACE = 'App\\Services\\Pages\\VM';
-    const NAMESPACE_SUFFIX = 'VM';
-    const NAMESPACE_DELIMITER = '\\';
-
-    const TEMPLATE_DIR = 'pages/';
-
-    const SLUG_DELIMITER = '/';
-
+    
     /**
      * @param string $slug
      * @return string
      */
     public static function parseSlugToNamespace(string $slug): string
     {
-        $slug = collect(explode(self::SLUG_DELIMITER, $slug))
+        $slug = collect(explode(config('page.delimiter.slug'), $slug))
             ->map(fn($slugItem) => Str::ucfirst(Str::lower($slugItem)))
-            ->join(self::NAMESPACE_DELIMITER);
+            ->join(config('page.delimiter.namespace'));
 
-        return self::NAMESPACE . self::NAMESPACE_DELIMITER . $slug . self::NAMESPACE_SUFFIX;
+        return config('page.view_model.namespace')
+            . config('page.delimiter.namespace')
+            . $slug
+            . config('page.view_model.suffix');
     }
 
     /**
@@ -43,9 +38,11 @@ class PageSlugParser
         $alias = Str::ucfirst(Str::lower($alias));
 
         $namespace = self::parseSlugToNamespace($slug);
+        $defaultNamespace = config('page.view_model.namespace');
+
         return Str::replaceFirst(
-            self::NAMESPACE,
-            self::NAMESPACE . self::NAMESPACE_DELIMITER . $alias,
+            $defaultNamespace,
+            $defaultNamespace . config('page.delimiter.namespace') . $alias,
             $namespace
         );
     }
@@ -62,7 +59,7 @@ class PageSlugParser
         ])->map(function ($namespace){
             return [
                 $namespace,
-                Str::replaceLast(self::NAMESPACE_SUFFIX, '', $namespace)
+                Str::replaceLast(config('page.view_model.suffix'), '', $namespace)
             ];
         })->collapse();
     }
@@ -73,7 +70,11 @@ class PageSlugParser
      */
     public static function parseSlugToDir(string $slug): string
     {
-        return self::TEMPLATE_DIR . $slug;
+        $dir = config('page.template_dir');
+        if(substr($dir, -1) !== config('page.delimiter.slug')){
+            $dir .= config('page.delimiter.slug');
+        }
+        return $dir . $slug;
     }
 
 
@@ -83,7 +84,7 @@ class PageSlugParser
      */
     public static function parseSlugToProjectDir(string $slug): string
     {
-        return implode(self::SLUG_DELIMITER, [
+        return implode(config('page.delimiter.slug'), [
             ViewFactory::FRONT_DIR_NAME,
             ProjectFacade::getProject()->alias,
             self::parseSlugToDir($slug)

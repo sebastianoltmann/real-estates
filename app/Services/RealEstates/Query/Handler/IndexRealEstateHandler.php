@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class IndexRealEstateHandler implements QueryHandler
 {
+    const SHOW_ONE_REAL_ESTATE = 1;
 
     /**
      * @param Query $query
@@ -21,7 +22,7 @@ class IndexRealEstateHandler implements QueryHandler
     public function execute(Query $query)
     {
         $realEstates = RealEstate::paginate();
-        if($realEstates->count() === 1){
+        if($realEstates->count() === self::SHOW_ONE_REAL_ESTATE){
             throw App::make(OneRealEstateAvailableException::class)
                 ->redirectTo('realEstates.show')
                 ->withParams(['real_estate' => $realEstates->first()]);

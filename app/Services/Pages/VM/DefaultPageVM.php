@@ -26,7 +26,7 @@ class DefaultPageVM extends ViewModel implements PageVMInterface
         public string $slug
     )
     {
-        $this->slugParams = explode(PageSlugParser::SLUG_DELIMITER, $this->slug);
+        $this->slugParams = explode(config('page.delimiter.slug'), $this->slug);
         $this->setView($this->template());
     }
 
