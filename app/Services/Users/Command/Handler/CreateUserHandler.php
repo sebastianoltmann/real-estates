@@ -9,8 +9,6 @@ use App\Services\CQRS\CommandHandler;
 use App\Services\Permissions\Roles;
 use App\Services\Projects\Models\Project;
 use App\Services\Users\Command\CreateUserCommand;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class CreateUserHandler implements CommandHandler
 {
@@ -26,9 +24,7 @@ class CreateUserHandler implements CommandHandler
         /**
          * @var User $user
          */
-        $user = User::create($command->toArray() + [
-            'password' => Hash::make(Str::random(8))
-        ]);
+        $user = User::create($command->toArray());
         $user->projects()->attach($projects->pluck('id'), ['role' => Roles::USER()->getValue()]);
         $user->switchProject($projects->first());
 

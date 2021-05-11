@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -102,6 +104,13 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function(User $user) {
+            if(empty($user->password)){
+                $user->password = Hash::make(Str::random(8));
+            }
+        });
+
         static::deleting(function(User $user) {
             if($user->forceDeleting){
                 $realEstates = $user->ownRealEstates;
