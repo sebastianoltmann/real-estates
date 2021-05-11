@@ -8,7 +8,6 @@ use App\Services\Projects\Models\ProjectDomain;
 use App\Services\Permissions\Roles;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use App\Services\Projects\Models\ProjectMembership;
 
@@ -55,10 +54,7 @@ class ProjectSeeder extends Seeder
                     $projectModel->owner()->associate($user)->save();
                     $user->switchProject($projectModel);
                 }
-
             }
-
-//            $user->belongsToProject($projectModel);
         }
     }
 
