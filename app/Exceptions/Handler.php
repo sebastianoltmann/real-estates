@@ -45,7 +45,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         if($e instanceof Redirectable) {
-            return Redirect::route($e->route());
+            return Redirect::route($e->route(), $e->params());
         }
         return parent::render($request, $e);
     }

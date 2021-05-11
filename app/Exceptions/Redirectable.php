@@ -17,4 +17,9 @@ interface Redirectable
      * @return string|null
      */
     public function route(): ?string;
+
+    /**
+     * @return array
+     */
+    public function params(): array;
 }

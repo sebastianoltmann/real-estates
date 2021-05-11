@@ -7,6 +7,7 @@ use App\Services\Users\Http\Controllers\EmailVerificationPromptController;
 use App\Services\Users\Http\Controllers\EmailVerificationNotificationController;
 use App\Providers\RouteServiceProvider;
 use App\Services\Pages\Http\Controllers\PagesController;
+use App\Services\RealEstates\Http\Controllers\RealEstatesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,6 @@ Route::group([
         return redirect(RouteServiceProvider::HOME);
     });
 
-    Route::get('/documents', function () {
-        return view('welcome');
-    });
+    Route::get('/real-estates', [RealEstatesController::class, 'index'])->name('realEstates.index');
+    Route::get('/real-estates/{real_estate}', [RealEstatesController::class, 'show'])->name('realEstates.show');
 });

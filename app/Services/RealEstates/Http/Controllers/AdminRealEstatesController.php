@@ -11,8 +11,8 @@ use App\Services\RealEstates\Command\UpdateRealEstateCommand;
 use App\Services\RealEstates\Http\Requests\CreateRealEstateRequest;
 use App\Services\RealEstates\Http\Requests\UpdateRealEstateRequest;
 use App\Services\RealEstates\Models\RealEstate;
-use App\Services\RealEstates\Query\EditRealEstateQuery;
-use App\Services\RealEstates\Query\IndexRealEstateQuery;
+use App\Services\RealEstates\Query\AdminEditRealEstateQuery;
+use App\Services\RealEstates\Query\AdminIndexRealEstateQuery;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminRealEstatesController extends Controller
