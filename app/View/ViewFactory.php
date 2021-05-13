@@ -66,7 +66,7 @@ class ViewFactory extends BaseViewFactory
 
         if (!$this->isAdminView($view)){
             $views = array_merge([
-                Str::replaceFirst($this->getFrontDir(), "{$this->getFrontDir()}.{$this->getProjectDir()}", $view),
+                "{$this->getFrontDir()}.{$this->getProjectDir()}.{$view}"
             ], $views);
         }
 

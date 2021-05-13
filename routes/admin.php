@@ -13,10 +13,6 @@ use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Jetstream;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-Route::get('/', function() {
-    return redirect(RouteServiceProvider::HOME_ADMIN);
-});
-
 if(Jetstream::hasTeamFeatures()) {
     Route::put('admin/current-project', [CurrentTeamController::class, 'update'])->name('current-project.update');
     Route::resource(__('routes.projects'), AdminProjectController::class, [

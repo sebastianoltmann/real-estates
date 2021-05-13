@@ -7,13 +7,14 @@ namespace App\Services\Pages\VM;
 use App\Services\Pages\PageSlugParser;
 use App\View\ViewModel;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
 class DefaultPageVM extends ViewModel implements PageVMInterface
 {
     /**
-     * @var string[]
+     * @var Collection
      */
     private $slugParams;
 
@@ -26,20 +27,18 @@ class DefaultPageVM extends ViewModel implements PageVMInterface
         public string $slug
     )
     {
-        $this->slugParams = explode(config('page.delimiter.slug'), $this->slug);
+        $this->slugParams = collect(explode(config('page.delimiter.slug'), $this->slug));
         $this->setView($this->template());
-    }
-
-    private function template(): ?string
-    {
-        return PageSlugParser::parseSlugToDirs($this->slug)
-            ->filter(fn($template) => View::exists($template))
-            ->first();
     }
 
     public function title(): string
     {
-        return Str::title(Str::slug(Arr::last($this->slugParams), ' '));
+        return $this->makeTitle($this->slugParams->last());
+    }
+
+    private function makeTitle($string)
+    {
+        return Str::title(Str::slug($string, ' '));
     }
 
     public function seo(): array
@@ -47,8 +46,30 @@ class DefaultPageVM extends ViewModel implements PageVMInterface
         return [];
     }
 
-    public function breadcrumbs(): array
+    /**
+     * @return Collection|array
+     */
+    public function breadcrumbs(): Collection|array
     {
-        return [];
+        return  collect([[
+            'title' => __('Home'),
+            'url' => route('pages.index')
+        ]])->merge($this->slugParams->mapWithKeys(function($slug, $i){
+            $url = $this->slugParams
+                ->take($i + 1)
+                ->join(config('page.delimiter.slug'));
+
+            return [ $i => [
+                'title' => $this->makeTitle($slug),
+                'url' => route('pages.show', $url),
+            ]];
+        }));
+    }
+
+    private function template(): ?string
+    {
+        return PageSlugParser::parseSlugToDirs($this->slug)
+            ->filter(fn($template) => View::exists($template))
+            ->first();
     }
 }
