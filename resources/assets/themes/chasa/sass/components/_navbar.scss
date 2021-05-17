@@ -1,0 +1,79 @@
+.navbar {
+    &-light {
+        .navbar-nav {
+            .nav-link {
+                color: $white;
+
+                &:hover,
+                &:focus {
+                    color: #d41821;
+                    text-decoration: none;
+                }
+
+                &:active, &.active {
+                    color: #d41821;
+                    font-weight: normal !important
+                }
+            }
+        }
+    }
+
+    &-nav {
+        .nav-link {
+            font-size: 1.2em;
+            text-decoration: none;
+            padding: 0 25px !important;
+
+
+            @include media-breakpoint-down('lg') {
+                font-size: 1em;
+            }
+
+            span {
+                display: none;
+            }
+        }
+    }
+
+    &-lang {
+        line-height: 1.0;
+        @include media-breakpoint-up('lg') {
+            font-size: .6em;
+
+        }
+
+        .nav-link {
+            &.active {
+                @include media-breakpoint-down('md') {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &-contact {
+        @include media-breakpoint-down('md') {
+            padding: 15px 0;
+        }
+        @include media-breakpoint-down('sm') {
+            padding: 10px 0;
+        }
+
+    }
+
+    &-collapse {
+        @include media-breakpoint-down('md') {
+            order: 1;
+            padding-left: 85px;
+
+        }
+
+        .nav-link {
+            @include media-breakpoint-down('md') {
+                padding-top: 5px !important;
+                padding-bottom: 5px !important;
+
+            }
+        }
+    }
+}

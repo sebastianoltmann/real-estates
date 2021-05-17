@@ -32,6 +32,8 @@ class ProjectServiceProvider extends ServiceProvider
             Config::set('project.alias', $project->alias);
             Config::set('app.name', $project->name);
 
+            $this->assignMailConfig($project);
+
             return new ProjectService($project);
         });
     }
@@ -44,5 +46,15 @@ class ProjectServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+    }
+
+    /**
+     * @param Project $project
+     */
+    private function assignMailConfig(Project $project)
+    {
+        if($mailConfig = Config::get("project.{$project->alias}.mail")){
+            Config::set('mail', $mailConfig);
+        }
     }
 }

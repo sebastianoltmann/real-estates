@@ -11,10 +11,10 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('assets/css/app.bundle.css') }}">
+        <link rel="stylesheet" href="{{ asset('themes/admin/assets/css/app.bundle.css') }}">
 
         <!-- Scripts -->
-        <script src="{{ mix('assets/js/app.bundle.js') }}" defer></script>
+        <script src="{{ mix('themes/admin/assets/js/app.bundle.js') }}" defer></script>
     </head>
     <body class="bg-light font-sans antialiased">
     <x-jet-banner />

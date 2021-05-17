@@ -19,7 +19,7 @@
                 </x-jet-nav-link>
 
                 <x-jet-dropdown id="about"
-                                :active="request()->is('page/about', 'page/about/boutiques-only', 'page/about/talents', 'page/about/team')">
+                                :active="request()->is('page/about*')">
                     <x-slot name="trigger">
                         {{ __('About') }}
                     </x-slot>
@@ -45,10 +45,7 @@
                 </x-jet-dropdown>
 
                 <x-jet-dropdown id="pamperingProperties"
-                                :active="request()->is('page/pampering-properties',
-                                'page/pampering-properties/chasa-albgrisch',
-                                'page/pampering-properties/chasa-chau',
-                                'page/pampering-properties/chasa-y')">
+                                :active="request()->is('page/pampering-properties*')">
                     <x-slot name="trigger">
                         {{ __('Pampering Properties') }}
                     </x-slot>
@@ -73,8 +70,7 @@
                     </x-slot>
                 </x-jet-dropdown>
 
-                <x-jet-dropdown :active="request()->is('page/smart-lodging',
-                                'page/smart-lodging/friends-living')">
+                <x-jet-dropdown :active="request()->is('page/smart-lodging*')">
                     <x-slot name="trigger">
                         {{ __('Smart Lodging') }}
                     </x-slot>

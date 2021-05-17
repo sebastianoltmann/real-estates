@@ -11,12 +11,12 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('assets/css/app.bundle.css') }}">
+        <link rel="stylesheet" href="{{ mix('themes/admin/assets/css/app.bundle.css') }}">
 
         @livewireStyles
 
         <!-- Scripts -->
-        <script src="{{ mix('assets/js/app.bundle.js') }}" defer></script>
+        <script src="{{ mix('themes/admin/assets/js/app.bundle.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased bg-light">
         <x-jet-banner />

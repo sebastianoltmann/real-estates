@@ -52,6 +52,10 @@ return [
         'index' => "{$adminPrefix}/trash/{resource?}",
         'restore' => "{$adminPrefix}/trash/{resource}/restore/{model}",
         'forceDelete' => "{$adminPrefix}/trash/{resource}/force-delete/{model}",
-    ]
+    ],
 
+    'pages' => [
+        'index' => "/",
+        'show' => "page/{slug}",
+    ],
 ];

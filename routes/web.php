@@ -6,6 +6,7 @@ use App\Services\Users\Http\Controllers\EmailVerificationPromptController;
 use App\Services\Users\Http\Controllers\EmailVerificationNotificationController;
 use App\Services\Pages\Http\Controllers\PagesController;
 use App\Services\RealEstates\Http\Controllers\RealEstatesController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +31,10 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.send');
 
-Route::get('/', [PagesController::class, 'index'])->name('pages.index');
-Route::get('page/{slug}', [PagesController::class, 'show'])->name('pages.show')
+
+
+Route::get(LaravelLocalization::transRoute('routes.pages.index'), [PagesController::class, 'index'])->name('pages.index');
+Route::get(LaravelLocalization::transRoute('routes.pages.show'), [PagesController::class, 'show'])->name('pages.show')
     ->where('slug', '[\w\s\-_\/]+');
 
 Route::group([
