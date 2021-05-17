@@ -16,7 +16,7 @@ class CreateProjectDomainsTable extends Migration
         Schema::create('project_domains', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->foreignId('project_id');
+            $table->foreignId('project_id')->nullable()->constrained();
             $table->string('domain')->unique();
             $table->unsignedTinyInteger('is_ssl')->default(0);
             $table->timestamps();
