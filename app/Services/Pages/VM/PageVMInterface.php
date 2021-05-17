@@ -4,11 +4,13 @@
 namespace App\Services\Pages\VM;
 
 
+use Illuminate\Support\Collection;
+
 interface PageVMInterface
 {
     public function title(): string;
 
-    public function seo(): array;
+    public function seo(): Collection|array;
 
-    public function breadcrumbs(): array;
+    public function breadcrumbs(): Collection|array;
 }
