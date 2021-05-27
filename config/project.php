@@ -9,7 +9,7 @@ return [
     'projects' => [
         [
             'name' => 'Yask.pro',
-            'domain' => 'yask.pro',
+            'domain' => 'yaskpro.com',
             'alias' => 'yask',
             'is_main' => 1,
         ],
