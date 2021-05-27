@@ -5,11 +5,12 @@ namespace App\Providers;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\ProjectService;
 use App\Services\Projects\ProjectServiceInterface;
+use App\Services\Projects\Repositories\ProjectRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Services\Projects\Repositories\ProjectRepository;
 
 class ProjectServiceProvider extends ServiceProvider
 {
@@ -41,40 +42,6 @@ class ProjectServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap services.
-     *
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->app->make('project');
-    }
-
-    /**
-     * @param Project $project
-     * @param string  $config
-     */
-    private function mergeConfig(Project $project, string $config){
-        if($configProject = Config::get("project.{$project->alias}.{$config}")){
-            $defaultConfig =  Config::get($config);
-            $configProject = array_merge($defaultConfig, $configProject);
-            Config::set($config, $configProject);
-        }
-    }
-
-    /**
-     * @param Project $project
-     * @param string  $config
-     */
-    private function overrideConfig(Project $project, string $config){
-        if($configProject = Config::get("project.{$project->alias}.{$config}")){
-            Config::set($config, $configProject);
-        }
-    }
-
-
-    /**
      * @param Project $project
      */
     private function assignAppConfig(Project $project)
@@ -85,13 +52,24 @@ class ProjectServiceProvider extends ServiceProvider
 
     /**
      * @param Project $project
+     * @param string  $config
+     */
+    private function mergeConfig(Project $project, string $config)
+    {
+        if($configProject = Config::get("project.{$project->alias}.{$config}")) {
+            $defaultConfig = Config::get($config);
+            $configProject = array_merge($defaultConfig, $configProject);
+            Config::set($config, $configProject);
+        }
+    }
+
+    /**
+     * @param Project $project
      */
     private function assignMailConfig(Project $project)
     {
         $this->mergeConfig($project, 'mail');
     }
-
-
 
     /**
      * @param Project $project
@@ -101,10 +79,34 @@ class ProjectServiceProvider extends ServiceProvider
         $this->mergeConfig($project, 'laravellocalization');
 
         $supportedLocales = Config::get('laravellocalization.supportedLocales');
-        if(count($supportedLocales) == 1){
+        if(count($supportedLocales) == 1) {
             LaravelLocalization::setLocale(array_key_first($supportedLocales));
         }
         LaravelLocalization::setSupportedLocales(null);
 
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if(Schema::hasTable('projects')) {
+            $this->app->make('project');
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @param string  $config
+     */
+    private function overrideConfig(Project $project, string $config)
+    {
+        if($configProject = Config::get("project.{$project->alias}.{$config}")) {
+            Config::set($config, $configProject);
+        }
     }
 }
