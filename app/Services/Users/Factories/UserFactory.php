@@ -28,7 +28,7 @@ class UserFactory extends Factory
     {
         return [
             'uuid' => $this->faker->uuid(),
-            'attention' => $this->faker->randomElements(Attention::toArray()),
+            'attention' => $this->faker->randomElement(Attention::toArray()),
             'first_name' => $this->faker->name(),
             'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),

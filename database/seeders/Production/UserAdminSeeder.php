@@ -15,6 +15,7 @@ class UserAdminSeeder extends Seeder
     public function run()
     {
         foreach($this->users() as $user){
+
             if(!User::whereEmail($user['email'])->first()) {
                 User::factory()->create($user);
             }
@@ -26,7 +27,7 @@ class UserAdminSeeder extends Seeder
     {
         return [
             [
-                'attension' => 'mr',
+                'attention' => 'mr',
                 'first_name' => 'Sebastian',
                 'last_name' => 'Bolek',
                 'email' => 'sebastian@yask.com',
@@ -34,7 +35,7 @@ class UserAdminSeeder extends Seeder
             ],
 
             [
-                'attension' => 'mr',
+                'attention' => 'mr',
                 'first_name' => 'Sebastian',
                 'last_name' => 'Oltmann',
                 'email' => 'sebi@yask.com',
