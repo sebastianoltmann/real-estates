@@ -8,7 +8,6 @@ use App\Services\Projects\ProjectServiceInterface;
 use App\Services\Projects\Repositories\ProjectRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -29,6 +28,10 @@ class ProjectServiceProvider extends ServiceProvider
              */
             $project = $app->make(ProjectRepository::class)
                 ->findByDomain($app->request->getHost());
+
+            if(!$project) {
+                return new ProjectService(new Project());
+            }
 
             Config::set('project.alias', $project->alias);
 
@@ -94,9 +97,7 @@ class ProjectServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(Schema::hasTable('projects')) {
-            $this->app->make('project');
-        }
+        $this->app->make('project');
     }
 
     /**
