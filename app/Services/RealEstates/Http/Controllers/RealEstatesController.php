@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\CQRS\Facades\QueryDispatcherFacade as QueryDispatcher;
 use App\Services\RealEstates\Models\RealEstate;
 use App\Services\RealEstates\Query\IndexRealEstateQuery;
+use App\Services\RealEstates\Query\ShowRealEstateQuery;
 
 class RealEstatesController extends Controller
 {
@@ -19,16 +20,18 @@ class RealEstatesController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(){
-        return QueryDispatcher::execute(
+        return view('real-estates.index',  QueryDispatcher::execute(
             new IndexRealEstateQuery()
-        );
+        ));
     }
 
     /**
      * @param RealEstate $realEstate
-     * @return RealEstate
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(RealEstate $realEstate){
-        return $realEstate;
+        return view('real-estates.show', QueryDispatcher::execute(
+            new ShowRealEstateQuery($realEstate)
+        ));
     }
 }

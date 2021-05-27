@@ -46,7 +46,7 @@
                           :value="$u->uuid"
                           :checked="$realEstate->owner && $u->id === $realEstate->owner->id"
                           autocomplete="off"
-                          :label="$u->name"
+                          :label="$u->full_name"
             >
                 <x-slot name="help">
                     @can('update', $u)

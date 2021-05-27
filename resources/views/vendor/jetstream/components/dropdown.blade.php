@@ -9,13 +9,28 @@
                             : ''
 @endphp
 
-<li class="nav-item dropdown">
-    <a id="{{ $id }}" {!! $attributes->merge(['class' => $classes]) !!} role="button" data-toggle="dropdown"
-       aria-expanded="false">
-        {{ $trigger }}
-    </a>
+<li class="nav-item @if(!empty($content))dropdown @endif">
+    @if(!empty($content))
+        <a id="{{ $id }}" {!! $attributes->merge(['class' => $classes]) !!}
+        role="button"
+           data-toggle="dropdown"
+           aria-expanded="false">
+            @else
+                <span id="{{ $id }}" {!! $attributes->merge(['class' => $classes]) !!}>
+            @endif
 
-    <div class="dropdown-menu animate slideIn {{ $dropdownAlignClass }}" aria-labelledby="{{ $id }}">
-        {{ $content }}
-    </div>
+            {{ $trigger }}
+
+            @if(!empty($content))
+        </a>
+        @else
+        </span>
+    @endif
+
+
+    @if(!empty($content))
+        <div class="dropdown-menu animate slideIn {{ $dropdownAlignClass }}" aria-labelledby="{{ $id }}">
+            {{ $content }}
+        </div>
+    @endif
 </li>

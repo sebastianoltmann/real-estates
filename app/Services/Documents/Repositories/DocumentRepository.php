@@ -8,9 +8,29 @@ use App\Models\User;
 use App\Services\Documents\Events\DocumentHasBeenDownloaded;
 use App\Services\Documents\Models\Document;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class DocumentRepository extends EloquentRepository
 {
+
+    /**
+     * @return Collection
+     */
+    public function getDocumentsWithoutRealEstates(): Collection
+    {
+        return Document::byProject()->doesntHave('realEstates')->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPublishedDocumentsWithoutRealEstates(): Collection
+    {
+        return Document::byProject()
+            ->doesntHave('realEstates')
+            ->where('published_at', '<=', now())
+            ->get();
+    }
 
     /**
      * @return string

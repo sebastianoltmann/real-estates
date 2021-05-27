@@ -41,7 +41,7 @@ class RealEstatePolicy
         }
 
         if($realEstate->sold &&
-            $realEstate->owner === $user){
+            $realEstate->owner->id === $user->id){
             return true;
         } elseif(!$realEstate->sold){
             return true;

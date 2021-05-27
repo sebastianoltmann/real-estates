@@ -7,7 +7,7 @@ use App\Services\Users\Http\Controllers\EmailVerificationNotificationController;
 use App\Services\Pages\Http\Controllers\PagesController;
 use App\Services\RealEstates\Http\Controllers\RealEstatesController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-
+use App\Services\RealEstates\Http\Controllers\RealEstatesDocumentsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +40,12 @@ Route::get(LaravelLocalization::transRoute('routes.pages.show'), [PagesControlle
 Route::group([
     'middleware' => ['auth:sanctum', 'auth', 'verified']
 ], function(){
-    Route::get('/real-estates', [RealEstatesController::class, 'index'])->name('realEstates.index');
-    Route::get('/real-estates/{real_estate}', [RealEstatesController::class, 'show'])->name('realEstates.show');
+
+    Route::resource('real-estates', RealEstatesController::class)
+        ->names('realEstates')
+        ->only(['index', 'show']);
+
+    Route::resource('real-estates.documents', RealEstatesDocumentsController::class)
+        ->names('realEstates.documents')
+        ->only('show');
 });

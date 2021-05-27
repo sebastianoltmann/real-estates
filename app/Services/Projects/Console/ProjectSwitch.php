@@ -60,7 +60,8 @@ class ProjectSwitch extends Command
     {
         $domain->project()->associate($project)->save();
 
-        Artisan::call('config:cache');
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
 
         $this->info("Switched project to {$project->alias}.");
     }

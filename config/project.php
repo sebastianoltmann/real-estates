@@ -18,5 +18,10 @@ return [
             'domain' => 'chasachau.com',
             'alias' => 'chasa',
         ],
+        [
+            'name' => 'AlbGrisch',
+            'domain' => 'albgrisch.com',
+            'alias' => 'ag',
+        ],
     ],
 ];

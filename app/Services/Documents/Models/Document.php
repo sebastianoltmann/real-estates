@@ -34,6 +34,8 @@ use App\Services\Documents\Traits\HasFileDocument;
  * @property bool $published
  * @property Carbon|null $published_at
  * @package App\Services\Documents\Models
+ *
+ * @method static Builder byProject(Project $project = null)
  */
 class Document extends Model implements HasMedia
 {

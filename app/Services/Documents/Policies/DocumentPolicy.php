@@ -5,12 +5,24 @@ namespace App\Services\Documents\Policies;
 use App\Models\User;
 use App\Services\Documents\Models\Document;
 use App\Services\Permissions\Permission;
-use App\Services\Permissions\Roles;
+use App\Services\RealEstates\Models\RealEstate;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
 
 class DocumentPolicy
 {
     use HandlesAuthorization;
+
+    /**
+     * DocumentPolicy constructor.
+     *
+     * @param Request $request
+     */
+    public function __construct(
+        private Request $request
+    )
+    {
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -39,11 +51,16 @@ class DocumentPolicy
 
         if($user->isAdmin()) return true;
 
+        /**
+         * @var RealEstate $realEstate
+         */
+        $realEstate = $this->request->real_estate;
 
-        // TODO: change checking document for user
-        return $user->documents
-            && $user->documents->contains($document)
-            && $document->published;
+        if($realEstate->sold) {
+            if($realEstate->owner->id !== $user->id) return false;
+            // TODO: check document category
+        }
+        return $document->published;
     }
 
     /**
