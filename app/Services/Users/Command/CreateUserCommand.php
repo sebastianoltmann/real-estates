@@ -11,9 +11,19 @@ class CreateUserCommand implements Command
     use CommandHelper;
 
     /**
+     * @var string|null
+     */
+    protected string|null $attention = null;
+
+    /**
      * @var string
      */
-    protected string $name;
+    protected string $first_name;
+
+    /**
+     * @var string
+     */
+    protected string $last_name;
 
     /**
      * @var string
@@ -42,9 +52,25 @@ class CreateUserCommand implements Command
     /**
      * @return string
      */
-    public function getName(): string
+    public function getAttention(): string
     {
-        return $this->name;
+        return $this->attention;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->last_name;
     }
 
     /**

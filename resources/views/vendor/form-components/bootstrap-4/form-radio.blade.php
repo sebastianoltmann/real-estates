@@ -1,4 +1,4 @@
-<div class="form-check">
+<div class="form-check @if($attributes->get('inline') === true)form-check-inline @endif">
     <input {!! $attributes->merge(['class' => 'form-check-input ' . ($hasError($name) ? 'is-invalid' : '')]) !!}
         type="radio"
 

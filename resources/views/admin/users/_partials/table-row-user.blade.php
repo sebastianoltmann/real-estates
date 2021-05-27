@@ -3,7 +3,7 @@
         {{ $user->id }}
     </td>
     <td class="user-table-column">
-        {{ $user->name }}
+        {{ $user->full_name }}
     </td>
     <td class="user-table-column">
         <a href="mailto:{{ $user->email }}">

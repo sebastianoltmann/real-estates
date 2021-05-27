@@ -10,12 +10,35 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                <div class="form-group">
-                    <x-jet-label value="{{ __('Name') }}" />
+                <x-form-group>
+                    <x-jet-label class="d-block" value="{{ __('Attention') }}" />
 
-                    <x-jet-input class="{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
-                                 :value="old('name')" required autofocus autocomplete="name" />
-                    <x-jet-input-error for="name"></x-jet-input-error>
+                    @foreach(\App\Services\Users\Attention::values() as $attention)
+                        <x-form-radio :id="'attention'.$attention->getValue()"
+                                      name="attention"
+                                      :value="$attention->getValue()"
+                                      autocomplete="off"
+                                      :checked="old('attention') === $attention->getValue()"
+                                      :label='__("fields.attention.values.{$attention->getValue()}")'
+                                      :inline="true"
+                        />
+                    @endforeach
+                </x-form-group>
+
+                <div class="form-group">
+                    <x-jet-label value="{{ __('First name') }}" />
+
+                    <x-jet-input class="{{ $errors->has('first_name') ? 'is-invalid' : '' }}" type="text" name="first_name"
+                                 :value="old('first_name')" required autofocus autocomplete="given-name" />
+                    <x-jet-input-error for="first_name"></x-jet-input-error>
+                </div>
+
+                <div class="form-group">
+                    <x-jet-label value="{{ __('Last name') }}" />
+
+                    <x-jet-input class="{{ $errors->has('last_name') ? 'is-invalid' : '' }}" type="text" name="last_name"
+                                 :value="old('last_name')" required autofocus autocomplete="family-name" />
+                    <x-jet-input-error for="last_name"></x-jet-input-error>
                 </div>
 
                 <div class="form-group">

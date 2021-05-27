@@ -2,7 +2,9 @@
 
 namespace App\Services\Users\Http\Requests;
 
+use App\Services\Users\Attention;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -24,7 +26,9 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'attention' => ['nullable', Rule::in(Attention::toArray())],
+            'first_name' => 'required|string|min:2|max:255',
+            'last_name' => 'required|string|min:2|max:255',
             'email' => 'required|email|unique:users,email',
             'projects' => 'required|array',
             'projects.*' => 'uuid|exists:projects,uuid',

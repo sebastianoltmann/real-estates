@@ -127,7 +127,7 @@
                             <div class="pr-3">
                                 <img width="32" class="rounded-circle" src="{{ $user->profile_photo_url }}">
                             </div>
-                            <span>{{ $user->name }}</span>
+                            <span>{{ $user->full_name }}</span>
                         </div>
 
                         <div class="d-flex">

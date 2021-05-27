@@ -6,9 +6,14 @@ use App\Models\User;
 use App\Services\Auth\Rules\UserUniqueForEachProject;
 use App\Services\Permissions\Roles;
 use App\Services\Projects\ProjectServiceInterface;
+use App\Services\Users\Attention;
+use FlashMessages\FlashMessageContract;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
@@ -33,7 +38,9 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'attention' => ['nullable', Rule::in(Attention::toArray())],
+            'first_name' => ['required', 'string', 'min:2', 'max:255'],
+            'last_name' => ['required', 'string', 'min:2', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', new UserUniqueForEachProject()],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
@@ -42,6 +49,7 @@ class CreateNewUser implements CreatesNewUsers
             return tap(User::updateOrCreate(
                 ['email' => $input['email']],  $input
             ), function(User $user) {
+
                 $user->projects()->attach(
                     $this->projectService->getProject(),
                     ['role' => Roles::USER()->getValue()]

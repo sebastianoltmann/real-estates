@@ -9,7 +9,7 @@
         <div class="card-header">
             <h4 class="mb-0 d-flex align-items-center justify-content-between">
                 @if($user->id)
-                    {{ __('Edit user:') }} {{ $user->name | title }}
+                    {{ __('Edit user:') }} {{ $user->full_name | title }}
                 @else
                     {{ __('Create new user') }}
 
@@ -23,7 +23,7 @@
 
                             <button class="btn btn-dark"
                                     type="submit"
-                                    onclick="return confirm('{{ __('Are you sure you want to remove the ":name" user', ['name' => $user->name]) }}')"
+                                    onclick="return confirm('{{ __('Are you sure you want to remove the ":name" user', ['name' => $user->full_name]) }}')"
                             >
                                 Delete
                             </button>
@@ -42,11 +42,36 @@
 
             <div class="card-body">
 
-                <x-form-input id="name"
-                              name="name"
-                              :value="$user->name"
-                              :placeholder="__('Name')"
-                              :label="__('Name')"
+                <x-form-group>
+                    <label class="d-block">
+                        {{ __('Attention') }}
+                    </label>
+
+                    @foreach(\App\Services\Users\Attention::values() as $attention)
+                        <x-form-radio :id="'attention'.$attention->getValue()"
+                                      name="attention"
+                                      :value="$attention->getValue()"
+                                      :checked="$user->attention === $attention->getValue()"
+                                      autocomplete="off"
+                                      :label='__("fields.attention.values.{$attention->getValue()}")'
+                                      :inline="true"
+                        />
+                    @endforeach
+                </x-form-group>
+
+                <x-form-input id="first_name"
+                              name="first_name"
+                              :value="$user->first_name"
+                              :placeholder="__('First name')"
+                              :label="__('First name')"
+                              :required="true"
+                />
+
+                <x-form-input id="last_name"
+                              name="last_name"
+                              :value="$user->last_name"
+                              :placeholder="__('Last name')"
+                              :label="__('Last name')"
                               :required="true"
                 />
 
@@ -76,7 +101,8 @@
                             >
                                 <x-slot name="help">
                                     @can('update', $project)
-                                        <a class="btn btn-sm btn-link d-inline-flex align-items-center" href="{{ route('admin.projects.show', $project) }}">
+                                        <a class="btn btn-sm btn-link d-inline-flex align-items-center"
+                                           href="{{ route('admin.projects.show', $project) }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-pen mr-2" viewBox="0 0 16 16">
                                                 <path
@@ -112,7 +138,8 @@
                             >
                                 <x-slot name="help">
                                     @can('update', $realEstate)
-                                        <a class="btn btn-sm btn-link d-inline-flex align-items-center" href="{{ route('admin.realEstates.edit', $realEstate) }}">
+                                        <a class="btn btn-sm btn-link d-inline-flex align-items-center"
+                                           href="{{ route('admin.realEstates.edit', $realEstate) }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-pen mr-2" viewBox="0 0 16 16">
                                                 <path
@@ -132,9 +159,12 @@
             </div>
 
             <div class="card-footer d-flex align-items-center">
-                <a class="btn btn-secondary btn btn-lg d-flex align-items-center" href="{{ route('admin.users.index') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left mr-3" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                <a class="btn btn-secondary btn btn-lg d-flex align-items-center"
+                   href="{{ route('admin.users.index') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-chevron-left mr-3" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                     </svg>
                     <span>{{ __('Back') }}</span>
 
