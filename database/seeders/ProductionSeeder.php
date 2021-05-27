@@ -2,14 +2,13 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Development\DevProjectDomainSeeder;
-use Database\Seeders\Development\UserAdminSeeder;
+use Database\Seeders\Production\UserAdminSeeder;
 use Database\Seeders\Other\DocumentCategorySeeder;
-use Database\Seeders\Development\ProjectSeeder;
+use Database\Seeders\Production\ProjectSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
 
-class DevelopmentSeeder extends Seeder
+class ProductionSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -18,13 +17,13 @@ class DevelopmentSeeder extends Seeder
      */
     public function run()
     {
-        if(App::environment(['local','development'])){
+        if(App::environment('production')){
             $this->call([
                 UserAdminSeeder::class,
                 ProjectSeeder::class,
-                DevProjectDomainSeeder::class,
                 DocumentCategorySeeder::class,
             ]);
+
         }
     }
 }

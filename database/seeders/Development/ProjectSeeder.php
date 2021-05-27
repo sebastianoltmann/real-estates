@@ -1,15 +1,17 @@
 <?php
 
-namespace Database\Seeders\Other;
+namespace Database\Seeders\Development;
 
 use App\Models\User;
+use App\Services\Permissions\Roles;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\Models\ProjectDomain;
-use App\Services\Permissions\Roles;
+use App\Services\Projects\Models\ProjectMembership;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
-use App\Services\Projects\Models\ProjectMembership;
 
 class ProjectSeeder extends Seeder
 {
@@ -28,24 +30,25 @@ class ProjectSeeder extends Seeder
 
         Project::reguard();
 
-        $users = User::all();
+        $users = $this->users();
 
-        foreach($this->projects() as $project){
+        foreach($this->projects() as $project) {
 
             /**
              * @var Project $projectModel
              */
+
             $projectModel = Project::create($project);
 
-            if(!empty($project['domain'])){
+            if(!empty($project['domain'])) {
                 $projectModel->projectDomains()->create([
                     'domain' => $project['domain'],
                 ]);
             }
 
-            if(!$users->isEmpty()){
+            if(!$users->isEmpty()) {
 
-                foreach($users as $user){
+                foreach($users as $user) {
                     /**
                      * @var User $user
                      */
@@ -58,7 +61,24 @@ class ProjectSeeder extends Seeder
         }
     }
 
-    private function projects(): array
+    /**
+     * @return Collection
+     */
+    protected function users(): Collection
+    {
+        $users = User::whereHas('projects', function(Builder $query) {
+            $query->whereRole(Roles::ADMIN()->getValue());
+        })->get();
+
+        return $users->isEmpty()
+            ? User::all()
+            : $users;
+    }
+
+    /**
+     * @return array
+     */
+    protected function projects(): array
     {
         return Config::get('project.projects');
     }

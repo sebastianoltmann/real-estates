@@ -5,6 +5,7 @@ namespace App\Services\Users\Factories;
 use App\Models\Team;
 use App\Models\User;
 use App\Services\Projects\Models\Project;
+use App\Services\Users\Attention;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
@@ -27,7 +28,9 @@ class UserFactory extends Factory
     {
         return [
             'uuid' => $this->faker->uuid(),
-            'name' => $this->faker->name(),
+            'attention' => $this->faker->randomElements(Attention::toArray()),
+            'first_name' => $this->faker->name(),
+            'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // password

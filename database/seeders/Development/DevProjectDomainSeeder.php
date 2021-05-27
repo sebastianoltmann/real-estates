@@ -16,7 +16,10 @@ class DevProjectDomainSeeder extends Seeder
      */
     public function run()
     {
-        ProjectDomain::create(['domain' => config('project.dev_domain')]);
+
+        if(!ProjectDomain::where('domain', config('project.dev_domain'))->exists()){
+            ProjectDomain::create(['domain' => config('project.dev_domain')]);
+        }
 
         if($project = Project::whereIsMain(1)->first()){
             Artisan::call("project {$project->alias}");
