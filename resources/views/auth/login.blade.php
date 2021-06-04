@@ -18,13 +18,23 @@
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <div class="form-group">
-                    <x-jet-label value="{{ __('Email') }}" />
 
-                    <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }}" type="email"
-                                 name="email" :value="old('email')" required />
-                    <x-jet-input-error for="email"></x-jet-input-error>
-                </div>
+                @if(!request('email'))
+                    <div class="form-group">
+                        <x-jet-label value="{{ __('Email') }}" />
+
+                        <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }}" type="email"
+                                     name="email"
+                                     :value="old('email')" required />
+                        <x-jet-input-error for="email"></x-jet-input-error>
+                    </div>
+                @else
+                    <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                 type="hidden"
+                                 name="email"
+                                 :value="request('email')"
+                                 required />
+                @endif
 
                 <div class="form-group">
                     <x-jet-label value="{{ __('Password') }}" />
