@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+
+use App\Services\CQRS\Query;
+
+class DummyClass implements Query
+{
+
+    /**
+     * DummyClass constructor.
+     */
+    public function __construct()
+    {
+        // TODO: Implement __construct() method.
+    }
+}

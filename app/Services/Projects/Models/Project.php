@@ -3,15 +3,32 @@
 namespace App\Services\Projects\Models;
 
 use App\Common\Traits\Eloquent\HasUuidAttribute;
-use App\Models\User;
+use App\Services\Documents\Models\Document;
+use App\Services\Permissions\Roles;
 use App\Services\Projects\Factory\ProjectFactory;
+use App\Services\RealEstates\Models\RealEstate;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use Laravel\Jetstream\Team;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 use Spatie\Translatable\HasTranslations;
-use Laravel\Jetstream\Team;
 
-
+/**
+ * Class Project
+ *
+ * @property Collection realEstates
+ * @property Collection projectDomains
+ * @property Collection documents
+ * @property string alias
+ *
+ * @method static flushQueryCache
+ *
+ * @package App\Services\Projects\Models
+ */
 class Project extends Team
 {
     use HasFactory,
@@ -45,38 +62,55 @@ class Project extends Team
     protected $fillable = ['name', 'alias', 'is_main'];
 
     /**
+     * Create a new factory instance for the model.
+     *
+     * @return Factory
+     */
+    protected static function newFactory(): Factory
+    {
+        return new ProjectFactory();
+    }
+
+    /**
      * Get the value of the model's route key.
      *
      * @return mixed
      */
     public function getRouteKeyName()
     {
-        return 'uuid';
+        return $this->getUuidKeyName();
     }
 
     /**
-     * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return HasMany
      */
-    protected static function newFactory()
-    {
-        return new ProjectFactory();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function projectDomains()
+    public function projectDomains(): HasMany
     {
         return $this->hasMany(ProjectDomain::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return HasMany
      */
-    public function user()
+    public function documents(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->allDocuments()->doesntHave('realEstates');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function allDocuments(): HasMany
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function realEstates(): HasMany
+    {
+        return $this->hasMany(RealEstate::class);
+    }
+
 }

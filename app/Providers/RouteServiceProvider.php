@@ -2,11 +2,16 @@
 
 namespace App\Providers;
 
+use App\Services\Routing\ResourceLangRegistrar;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Routing\PendingResourceRegistration;
+use Illuminate\Routing\ResourceRegistrar;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -17,7 +22,20 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/real-estates';
+    public const HOME_ADMIN = '/admin/documents';
+
+
+    public const NAME_ADMIN = 'admin';
+    public const NAME_LIVEWIRE = 'livewire';
+
+
+
+    public function register()
+    {
+        parent::register();
+        $this->addResourceLangMacroToRouter();
+    }
 
     /**
      * The controller namespace for the application.
@@ -29,6 +47,14 @@ class RouteServiceProvider extends ServiceProvider
     // protected $namespace = 'App\\Http\\Controllers';
 
     /**
+     * @return string|null
+     */
+    public static function getTranslationPrefix(): ?string
+    {
+        return LaravelLocalization::setLocale() ?? null;
+    }
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -37,15 +63,22 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        $this->routes(function () {
+        $this->routes(function() {
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
+            Route::prefix(self::getTranslationPrefix())
+                ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::prefix(self::getTranslationPrefix())
+                ->name(self::NAME_ADMIN . '.')
+                ->middleware('admin')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/admin.php'));
         });
     }
 
@@ -56,8 +89,24 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting()
     {
-        RateLimiter::for('api', function (Request $request) {
+        RateLimiter::for('api', function(Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
+    }
+
+    private function addResourceLangMacroToRouter()
+    {
+        if(Router::hasMacro('resourceLang')) return;
+
+        Router::macro('resourceLang', function($name, $controller, array $options = []){
+            /**
+             * @var Router $this
+             */
+            $registrar = new ResourceLangRegistrar($this);
+
+            return new PendingResourceRegistration(
+                $registrar, $name, $controller, $options
+            );
         });
     }
 }

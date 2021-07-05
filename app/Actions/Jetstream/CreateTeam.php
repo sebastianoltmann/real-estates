@@ -2,6 +2,10 @@
 
 namespace App\Actions\Jetstream;
 
+use App\Models\User;
+use App\Services\Permissions\Roles;
+use App\Services\Projects\Models\Project;
+use App\Services\Users\Facade\UserFacade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Contracts\CreatesTeams;
@@ -13,7 +17,7 @@ class CreateTeam implements CreatesTeams
     /**
      * Validate and create a new team for the given user.
      *
-     * @param  mixed  $user
+     * @param  User  $user
      * @param  array  $input
      * @return mixed
      */
@@ -23,15 +27,24 @@ class CreateTeam implements CreatesTeams
 
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
+            'alias' => ['required', 'string', 'alpha', 'max:255', 'min:2', 'unique:projects,alias'],
         ])->validateWithBag('createTeam');
 
         AddingTeam::dispatch($user);
 
-        $user->switchTeam($team = $user->ownedTeams()->create([
+        /**
+         * @var Project $project
+         */
+        $user->switchProject($project = $user->ownedTeams()->create([
             'name' => $input['name'],
-            'personal_team' => false,
+            'alias' => $input['alias'],
         ]));
 
-        return $team;
+        $project->users()->attach(
+            UserFacade::getAllAdmins()->pluck('id')->toArray(),
+            ['role' => Roles::ADMIN()->getValue()]
+        );
+
+        return $project;
     }
 }

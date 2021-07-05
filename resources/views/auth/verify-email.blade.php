@@ -25,14 +25,6 @@
                         </x-jet-button>
                     </div>
                 </form>
-
-                <form method="POST" action="/logout">
-                    @csrf
-
-                    <button type="submit" class="btn btn-link">
-                        {{ __('Log Out') }}
-                    </button>
-                </form>
             </div>
         </div>
     </x-jet-authentication-card>

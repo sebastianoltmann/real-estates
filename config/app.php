@@ -160,7 +160,6 @@ return [
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -169,6 +168,7 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Providers\ViewServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -177,6 +177,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\ProjectServiceProvider::class,
+        App\Providers\CQRSServiceProvider::class,
 
     ],
 
@@ -230,6 +231,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        'CommandBus' => App\Services\CQRS\Facades\CommandBusFacade::class,
+        'QueryDispatcher' => App\Services\CQRS\Facades\QueryDispatcherFacade::class,
 
     ],
 

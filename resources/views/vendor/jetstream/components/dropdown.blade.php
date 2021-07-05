@@ -1,11 +1,36 @@
-@props(['id' => 'navbarDropdown'])
+@props(['id' => 'navbarDropdown', 'active', 'align'])
 
-<li class="nav-item dropdown">
-    <a id="{{ $id }}" {!! $attributes->merge(['class' => 'nav-link']) !!} role="button" data-toggle="dropdown" aria-expanded="false">
-        {{ $trigger }}
-    </a>
+@php
+    $classes = ($active ?? false)
+                ? 'nav-link active font-weight-bolder'
+                : 'nav-link';
+    $dropdownAlignClass = !empty($align)
+                            ? "dropdown-menu-{$align}"
+                            : ''
+@endphp
 
-    <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="{{ $id }}">
-        {{ $content }}
-    </div>
+<li class="nav-item @if(!empty($content))dropdown @endif">
+    @if(!empty($content))
+        <a id="{{ $id }}" {!! $attributes->merge(['class' => $classes]) !!}
+        role="button"
+           data-toggle="dropdown"
+           aria-expanded="false">
+            @else
+                <span id="{{ $id }}" {!! $attributes->merge(['class' => $classes]) !!}>
+            @endif
+
+            {{ $trigger }}
+
+            @if(!empty($content))
+        </a>
+        @else
+        </span>
+    @endif
+
+
+    @if(!empty($content))
+        <div class="dropdown-menu animate slideIn {{ $dropdownAlignClass }}" aria-labelledby="{{ $id }}">
+            {{ $content }}
+        </div>
+    @endif
 </li>

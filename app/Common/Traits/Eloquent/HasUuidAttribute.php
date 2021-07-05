@@ -4,7 +4,8 @@
 namespace App\Common\Traits\Eloquent;
 
 
-use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 trait HasUuidAttribute
 {
@@ -15,9 +16,37 @@ trait HasUuidAttribute
     protected static function bootHasUuidAttribute()
     {
         static::creating(function ($model) {
-            if (empty($model->uuid)) {
-                $model->uuid = Uuid::uuid4()->toString();
+            $uuidKey = $model->getUuidKeyName();
+            if (empty($model->{$uuidKey})) {
+                $model->{$uuidKey} = Str::uuid();
             }
         });
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuidKeyName(): string
+    {
+        return !empty($this->uuidKey)
+            ? $this->uuidKey
+            : 'uuid';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuidKey(): string
+    {
+        return $this->getAttribute($this->getUuidKeyName());
+    }
+
+    /**
+     * @param string $uuid
+     * @return Model|null
+     */
+    public static function findByUuid(string $uuid): ?Model
+    {
+        return static::where((new static())->getUuidKeyName(), $uuid)->first();
     }
 }

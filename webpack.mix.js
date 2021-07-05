@@ -11,9 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/assets/js/app.bundle.js')
-    .sass('resources/sass/app.scss', 'public/assets/css/app.bundle.css')
-    .webpackConfig(require('./webpack.config'));
+const themes = ['admin','chasa'];
+
+// // compile themes
+for (const theme of themes) {
+    mix.js(`resources/assets/themes/${theme}/js/app.js`, `public/themes/${theme}/assets/js/app.bundle.js`)
+        .sass(`resources/assets/themes/${theme}/sass/app.scss`, `public/themes/${theme}/assets/css/app.bundle.css`)
+        .webpackConfig(require('./webpack.config'))
+}
 
 if (mix.inProduction()) {
     mix.version();

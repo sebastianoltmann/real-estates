@@ -12,9 +12,11 @@ use App\Actions\Jetstream\UpdateTeamName;
 use App\Services\Projects\Models\Project;
 use App\Services\Projects\Models\ProjectInvitation;
 use App\Services\Projects\Models\ProjectMembership;
+use App\Services\Permissions\Roles;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
+use App\Services\Permissions\Permission;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -75,24 +77,12 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::role('super_admin', __('Super Administrator'), [
-            'create',
-            'read',
-            'update',
-            'delete',
-        ])->description(__('Administrator users can perform any action.'));
+        Jetstream::role(Roles::ADMIN()->getValue(), __('Administrator'), Permission::toArray());
 
-        Jetstream::role('admin', __('Administrator'), [
-            'create',
-            'read',
-            'update',
-            'delete',
-        ])->description(__('Administrator users can perform any action.'));
-
-        Jetstream::role('editor', __('Editor'), [
-            'read',
-            'create',
-            'update',
-        ])->description(__('Editor users have the ability to read, create, and update.'));
+        Jetstream::role(Roles::USER()->getValue(), __('User'), [
+            Permission::READ()->getValue(),
+            Permission::DOCUMENT_READ()->getValue(),
+            Permission::REAL_ESTATE_READ()->getValue(),
+        ]);
     }
 }
